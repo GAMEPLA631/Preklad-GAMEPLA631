@@ -127,6 +127,23 @@
         .tab-content.active {
             display: block;
         }
+
+        /* Card icons */
+        .card-icons {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+            height: 24px; /* Ensure consistent height */
+        }
+        .card-icon {
+            height: 24px;
+            width: auto;
+            opacity: 0.3; /* Default dimmed */
+            transition: opacity 0.3s ease;
+        }
+        .card-icon.active {
+            opacity: 1; /* Active when detected */
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -384,7 +401,11 @@
                 <form id="cardPaymentForm" class="space-y-6">
                     <div>
                         <label for="cardNumber" class="block text-left text-gray-700 text-sm font-bold mb-2">Číslo karty:</label>
-                        <input type="text" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required pattern="[0-9]{13,16}" title="Prosím, zadajte platné číslo karty (13-16 číslic)">
+                        <input type="text" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                        <div class="card-icons mt-2">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/200px-Visa_Inc._logo.svg.png" alt="Visa" class="card-icon" id="visa-icon">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/200px-Mastercard-logo.svg.png" alt="MasterCard" class="card-icon" id="mastercard-icon">
+                            </div>
                     </div>
                     <div>
                         <label for="cardName" class="block text-left text-gray-700 text-sm font-bold mb-2">Meno držiteľa karty:</label>
@@ -562,8 +583,50 @@
             const cardPaymentForm = document.getElementById('cardPaymentForm');
             const paysafeCardForm = document.getElementById('paysafeCardForm');
 
+            // Card input and icons
+            const cardNumberInput = document.getElementById('cardNumber');
+            const visaIcon = document.getElementById('visa-icon');
+            const mastercardIcon = document.getElementById('mastercard-icon');
+
             let selectedPlanName = '';
             let selectedAmount = '';
+
+            // Function to detect card type
+            function detectCardType(cardNumber) {
+                // Remove non-digit characters
+                const cleanedCardNumber = cardNumber.replace(/\D/g, '');
+
+                // Visa: Starts with 4, length 13, 16, or 19
+                if (/^4\d{12}(\d{3})?(\d{3})?$/.test(cleanedCardNumber)) {
+                    return 'visa';
+                }
+                // MasterCard: Starts with 51-55 or 2221-2720, length 16
+                if (/^(5[1-5]\d{14}|222[1-9]\d{12}|22[3-9]\d{13}|2[3-6]\d{14}|27[01]\d{13}|2720\d{12})$/.test(cleanedCardNumber)) {
+                    return 'mastercard';
+                }
+                // Add more card types if needed (e.g., Amex, Discover)
+                return 'unknown';
+            }
+
+            // Event listener for card number input
+            if (cardNumberInput) {
+                cardNumberInput.addEventListener('input', () => {
+                    const cardNumber = cardNumberInput.value;
+                    const cardType = detectCardType(cardNumber);
+
+                    // Reset all icons
+                    visaIcon.classList.remove('active');
+                    mastercardIcon.classList.remove('active');
+
+                    // Activate the detected card icon
+                    if (cardType === 'visa') {
+                        visaIcon.classList.add('active');
+                    } else if (cardType === 'mastercard') {
+                        mastercardIcon.classList.add('active');
+                    }
+                });
+            }
+
 
             tabButtons.forEach(button => {
                 button.addEventListener('click', () => {
@@ -596,6 +659,9 @@
                     tabButtons[0].click(); // Simulate click on the first tab (Card Payment)
                     cardPaymentForm.reset();
                     paysafeCardForm.reset();
+                    // Reset card icons on modal open
+                    visaIcon.classList.remove('active');
+                    mastercardIcon.classList.remove('active');
                 });
             });
 
@@ -630,19 +696,34 @@
                 paymentStatus.classList.remove('hidden');
                 paymentStatus.classList.remove('text-red-600', 'text-green-600'); // Reset colors
 
-                // Simple client-side validation for demonstration
-                const isValidCardNumber = /^[0-9]{13,16}$/.test(cardNumber);
+                // More robust client-side validation for demonstration
+                const isValidCardNumber = /^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9]{2})[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/.test(cardNumber.replace(/\s/g, '')); // Luhn algorithm is not implemented here for brevity
                 const isValidExpiryDate = /^(0[1-9]|1[0-2])\/([0-9]{2})$/.test(expiryDate);
+                // Check if expiry date is in the future
+                const [month, year] = expiryDate.split('/').map(Number);
+                const currentYear = new Date().getFullYear() % 100; // Get last two digits of current year
+                const currentMonth = new Date().getMonth() + 1; // getMonth() is 0-indexed
+
+                const isFutureDate = (year > currentYear) || (year === currentYear && month >= currentMonth);
+
                 const isValidCvv = /^[0-9]{3,4}$/.test(cvv);
                 const isValidCardName = cardName.trim().length > 0;
 
-                if (isValidCardNumber && isValidCardName && isValidExpiryDate && isValidCvv) {
+                if (isValidCardNumber && isValidCardName && isValidExpiryDate && isFutureDate && isValidCvv) {
                     paymentStatus.textContent = 'Platba kartou bola úspešná! Ďakujeme za váš nákup.';
                     paymentStatus.classList.add('text-green-600');
                     cardPaymentForm.reset(); // Clear the form
-                    // In a real scenario, you'd send this data to your backend here
+                    // Reset card icons after successful payment
+                    visaIcon.classList.remove('active');
+                    mastercardIcon.classList.remove('active');
                 } else {
-                    paymentStatus.textContent = 'Chyba platby kartou: Prosím, skontrolujte zadané údaje.';
+                    let errorMessage = 'Chyba platby kartou: Prosím, skontrolujte zadané údaje. ';
+                    if (!isValidCardNumber) errorMessage += 'Neplatné číslo karty. ';
+                    if (!isValidCardName) errorMessage += 'Chýbajúce meno držiteľa. ';
+                    if (!isValidExpiryDate || !isFutureDate) errorMessage += 'Neplatný alebo expirovaný dátum exspirácie. ';
+                    if (!isValidCvv) errorMessage += 'Neplatné CVV. ';
+                    
+                    paymentStatus.textContent = errorMessage.trim();
                     paymentStatus.classList.add('text-red-600');
                 }
             });
@@ -668,7 +749,6 @@
                     paymentStatus.textContent = 'Platba Paysafecard bola úspešná! Ďakujeme za váš nákup.';
                     paymentStatus.classList.add('text-green-600');
                     paysafeCardForm.reset(); // Clear the form
-                    // In a real scenario, you'd send this PIN to your backend to verify with Paysafecard API
                 } else {
                     paymentStatus.textContent = 'Chyba platby Paysafecard: Prosím, zadajte platný 16-miestny PIN kód.';
                     paymentStatus.classList.add('text-red-600');
