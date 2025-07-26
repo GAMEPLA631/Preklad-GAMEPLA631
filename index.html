@@ -99,6 +99,34 @@
             text-decoration: none;
             cursor: pointer;
         }
+
+        /* Tabs for payment methods */
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0; /* gray-200 */
+        }
+        .tab-button {
+            flex: 1;
+            padding: 10px 15px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background-color: transparent;
+            font-weight: 600;
+            color: #64748b; /* slate-500 */
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            color: #4f46e5; /* indigo-600 */
+            border-bottom: 2px solid #4f46e5; /* indigo-600 */
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -347,27 +375,45 @@
             <h2 class="text-3xl font-bold text-indigo-700 mb-6 text-center">Dokončenie platby</h2>
             <p id="modalPlanInfo" class="text-lg text-gray-700 mb-6 text-center"></p>
 
-            <form id="paymentForm" class="space-y-6">
-                <div>
-                    <label for="cardNumber" class="block text-left text-gray-700 text-sm font-bold mb-2">Číslo karty:</label>
-                    <input type="text" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required pattern="[0-9]{13,16}" title="Prosím, zadajte platné číslo karty (13-16 číslic)">
-                </div>
-                <div>
-                    <label for="cardName" class="block text-left text-gray-700 text-sm font-bold mb-2">Meno držiteľa karty:</label>
-                    <input type="text" id="cardName" placeholder="Meno na karte" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required>
-                </div>
-                <div class="flex space-x-4">
-                    <div class="w-1/2">
-                        <label for="expiryDate" class="block text-left text-gray-700 text-sm font-bold mb-2">Dátum exspirácie (MM/RR):</label>
-                        <input type="text" id="expiryDate" placeholder="MM/RR" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required pattern="(0[1-9]|1[0-2])\/([0-9]{2})" title="Formát MM/RR">
+            <div class="tab-buttons">
+                <button type="button" class="tab-button active" data-tab="card-payment">Platobná karta</button>
+                <button type="button" class="tab-button" data-tab="paysafecard-payment">Paysafecard</button>
+            </div>
+
+            <div id="card-payment" class="tab-content active">
+                <form id="cardPaymentForm" class="space-y-6">
+                    <div>
+                        <label for="cardNumber" class="block text-left text-gray-700 text-sm font-bold mb-2">Číslo karty:</label>
+                        <input type="text" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required pattern="[0-9]{13,16}" title="Prosím, zadajte platné číslo karty (13-16 číslic)">
                     </div>
-                    <div class="w-1/2">
-                        <label for="cvv" class="block text-left text-gray-700 text-sm font-bold mb-2">CVV:</label>
-                        <input type="text" id="cvv" placeholder="XXX" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required pattern="[0-9]{3,4}" title="3 alebo 4 číslice">
+                    <div>
+                        <label for="cardName" class="block text-left text-gray-700 text-sm font-bold mb-2">Meno držiteľa karty:</label>
+                        <input type="text" id="cardName" placeholder="Meno na karte" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required>
                     </div>
-                </div>
-                <button type="submit" class="btn-primary w-full py-3">Zaplatiť</button>
-            </form>
+                    <div class="flex space-x-4">
+                        <div class="w-1/2">
+                            <label for="expiryDate" class="block text-left text-gray-700 text-sm font-bold mb-2">Dátum exspirácie (MM/RR):</label>
+                            <input type="text" id="expiryDate" placeholder="MM/RR" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required pattern="(0[1-9]|1[0-2])\/([0-9]{2})" title="Formát MM/RR">
+                        </div>
+                        <div class="w-1/2">
+                            <label for="cvv" class="block text-left text-gray-700 text-sm font-bold mb-2">CVV:</label>
+                            <input type="text" id="cvv" placeholder="XXX" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required pattern="[0-9]{3,4}" title="3 alebo 4 číslice">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary w-full py-3">Zaplatiť kartou</button>
+                </form>
+            </div>
+
+            <div id="paysafecard-payment" class="tab-content">
+                <form id="paysafeCardForm" class="space-y-6">
+                    <div>
+                        <label for="paysafePin" class="block text-left text-gray-700 text-sm font-bold mb-2">16-miestny Paysafecard PIN kód:</label>
+                        <input type="text" id="paysafePin" placeholder="XXXX XXXX XXXX XXXX" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required pattern="[0-9]{16}" title="Prosím, zadajte platný 16-miestny PIN kód">
+                    </div>
+                    <button type="submit" class="btn-primary w-full py-3">Zaplatiť Paysafecard</button>
+                </form>
+            </div>
+
             <div id="paymentStatus" class="mt-6 text-center text-xl font-semibold hidden"></div>
         </div>
     </div>
@@ -506,11 +552,36 @@
             const closePaymentModal = document.getElementById('closePaymentModal');
             const openPaymentButtons = document.querySelectorAll('.open-payment-modal');
             const modalPlanInfo = document.getElementById('modalPlanInfo');
-            const paymentForm = document.getElementById('paymentForm');
             const paymentStatus = document.getElementById('paymentStatus');
+
+            // Tabs for payment methods
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            // Payment forms
+            const cardPaymentForm = document.getElementById('cardPaymentForm');
+            const paysafeCardForm = document.getElementById('paysafeCardForm');
 
             let selectedPlanName = '';
             let selectedAmount = '';
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetTab = button.dataset.tab;
+
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    tabContents.forEach(content => {
+                        if (content.id === targetTab) {
+                            content.classList.add('active');
+                        } else {
+                            content.classList.remove('active');
+                        }
+                    });
+                    paymentStatus.classList.add('hidden'); // Clear status when switching tabs
+                });
+            });
 
             openPaymentButtons.forEach(button => {
                 button.addEventListener('click', (event) => {
@@ -520,7 +591,11 @@
                     modalPlanInfo.textContent = `Vybrali ste si: ${selectedPlanName} za ${selectedAmount} € ročne.`;
                     paymentModal.style.display = 'flex'; // Show the modal
                     paymentStatus.classList.add('hidden'); // Hide status message on new open
-                    paymentForm.reset(); // Clear previous form data
+                    
+                    // Reset to default tab and clear forms when modal opens
+                    tabButtons[0].click(); // Simulate click on the first tab (Card Payment)
+                    cardPaymentForm.reset();
+                    paysafeCardForm.reset();
                 });
             });
 
@@ -535,7 +610,8 @@
                 }
             });
 
-            paymentForm.addEventListener('submit', (event) => {
+            // Card Payment Form Submission (Simulation)
+            cardPaymentForm.addEventListener('submit', (event) => {
                 event.preventDefault(); // Prevent default form submission
 
                 const cardNumber = document.getElementById('cardNumber').value;
@@ -543,7 +619,7 @@
                 const expiryDate = document.getElementById('expiryDate').value;
                 const cvv = document.getElementById('cvv').value;
 
-                console.log("Simulovaná platba:");
+                console.log("Simulovaná platba kartou:");
                 console.log("Plán:", selectedPlanName);
                 console.log("Suma:", selectedAmount, "€");
                 console.log("Číslo karty:", cardNumber);
@@ -561,13 +637,40 @@
                 const isValidCardName = cardName.trim().length > 0;
 
                 if (isValidCardNumber && isValidCardName && isValidExpiryDate && isValidCvv) {
-                    paymentStatus.textContent = 'Platba bola úspešná! Ďakujeme za váš nákup.';
+                    paymentStatus.textContent = 'Platba kartou bola úspešná! Ďakujeme za váš nákup.';
                     paymentStatus.classList.add('text-green-600');
-                    paymentForm.reset(); // Clear the form
+                    cardPaymentForm.reset(); // Clear the form
                     // In a real scenario, you'd send this data to your backend here
-                    // and then potentially close the modal or redirect upon successful backend processing.
                 } else {
-                    paymentStatus.textContent = 'Chyba platby: Prosím, skontrolujte zadané údaje.';
+                    paymentStatus.textContent = 'Chyba platby kartou: Prosím, skontrolujte zadané údaje.';
+                    paymentStatus.classList.add('text-red-600');
+                }
+            });
+
+            // Paysafecard Form Submission (Simulation)
+            paysafeCardForm.addEventListener('submit', (event) => {
+                event.preventDefault(); // Prevent default form submission
+
+                const paysafePin = document.getElementById('paysafePin').value;
+
+                console.log("Simulovaná platba Paysafecard:");
+                console.log("Plán:", selectedPlanName);
+                console.log("Suma:", selectedAmount, "€");
+                console.log("Paysafecard PIN:", paysafePin);
+
+                paymentStatus.classList.remove('hidden');
+                paymentStatus.classList.remove('text-red-600', 'text-green-600'); // Reset colors
+
+                // Simple client-side validation for demonstration (Paysafecard PIN is 16 digits)
+                const isValidPaysafePin = /^[0-9]{16}$/.test(paysafePin);
+
+                if (isValidPaysafePin) {
+                    paymentStatus.textContent = 'Platba Paysafecard bola úspešná! Ďakujeme za váš nákup.';
+                    paymentStatus.classList.add('text-green-600');
+                    paysafeCardForm.reset(); // Clear the form
+                    // In a real scenario, you'd send this PIN to your backend to verify with Paysafecard API
+                } else {
+                    paymentStatus.textContent = 'Chyba platby Paysafecard: Prosím, zadajte platný 16-miestny PIN kód.';
                     paymentStatus.classList.add('text-red-600');
                 }
             });
