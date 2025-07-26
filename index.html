@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preklad GAMEPLA631 - Prémiové Preklady</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Light gray background */
+            color: #334155; /* Dark slate gray text */
+        }
+        .premium-gradient {
+            background: linear-gradient(to right, #6366f1, #8b5cf6); /* Purple to Indigo gradient */
+        }
+        .btn-primary {
+            @apply bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:from-purple-700 hover:to-indigo-700 transition duration-300 ease-in-out transform hover:scale-105;
+        }
+        .card {
+            @apply bg-white p-6 rounded-xl shadow-lg border border-gray-100;
+        }
+        /* Basic animation for fade-in-up */
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in-up {
+            animation: fade-in-up 0.6s ease-out forwards;
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+
+        /* Modal specific styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            max-width: 90%;
+            width: 700px;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+        }
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #64748b;
+        }
+        .package-card {
+            @apply bg-gray-50 p-4 rounded-lg border border-gray-200 text-center flex flex-col justify-between;
+        }
+        .package-card.recommended {
+            @apply border-purple-500 border-2 bg-purple-50 text-purple-800;
+        }
+        .speak-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        .speak-button svg {
+            width: 24px;
+            height: 24px;
+            fill: #4c51bf; /* Indigo 600 */
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <!-- Header Section -->
+    <header class="bg-white shadow-md py-4">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <a href="#" class="text-3xl font-bold text-indigo-700">Preklad <span class="text-purple-600">GAMEPLA631</span></a>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="#about" class="text-gray-700 hover:text-indigo-600 font-medium">O nás</a></li>
+                    <li><a href="#services" class="text-700 hover:text-indigo-600 font-medium">Služby</a></li>
+                    <li><a href="#word-translator" class="text-gray-700 hover:text-indigo-600 font-medium">Prekladač slov</a></li>
+                    <li><a href="#packages" class="text-gray-700 hover:text-indigo-600 font-medium">Balíčky</a></li>
+                    <li><a href="#pricing" class="text-gray-700 hover:text-indigo-600 font-medium">Cenník</a></li>
+                    <li><a href="#contact" class="text-gray-700 hover:text-indigo-600 font-medium">Kontakt</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="premium-gradient text-white py-20 text-center">
+        <div class="container mx-auto px-4">
+            <h1 class="text-5xl md:text-6xl font-extrabold leading-tight mb-6 animate-fade-in-up">
+                Precízne Preklady. Bezkonkurenčná Kvalita.
+            </h1>
+            <p class="text-xl md:text-2xl mb-10 max-w-3xl mx-auto opacity-90 animate-fade-in-up delay-200">
+                PrekladGAMEPLA631 je synonymom pre luxusné prekladateľské služby.
+                Investujte do dokonalosti, ktorá sa vyplatí.
+            </p>
+            <a href="#contact" class="btn-primary animate-fade-in-up delay-400">
+                Vyžiadajte si exkluzívnu ponuku
+            </a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold text-indigo-700 mb-8">O Preklad GAMEPLA631</h2>
+            <p class="text-lg max-w-4xl mx-auto leading-relaxed">
+                Naša spoločnosť je založená na princípoch absolútnej kvality a diskrétnosti. Spolupracujeme výhradne
+                s elitnými prekladateľmi, ktorí sú nielen rodenými hovorcami, ale aj expertmi vo svojich špecializovaných
+                oblastiach. Každý projekt prechádza prísnym viacstupňovým procesom kontroly, aby sme zaručili
+                bezchybný výsledok, ktorý prekoná vaše očakávania. PrekladGAMEPLA631 nie je len služba, je to investícia
+                do vašej globálnej komunikácie.
+            </p>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-indigo-700 text-center mb-12">Naše Exkluzívne Služby</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service Card 1 -->
+                <div class="card transform hover:scale-105 transition duration-300">
+                    <h3 class="text-2xl font-semibold text-purple-600 mb-4">Odborné Preklady</h3>
+                    <p class="text-gray-600">
+                        Špecializujeme sa na technické, právne, medicínske, finančné a marketingové preklady.
+                        Naši prekladatelia majú hlboké znalosti v konkrétnych odvetviach, čo zaručuje terminologickú presnosť.
+                    </p>
+                </div>
+                <!-- Service Card 2 -->
+                <div class="card transform hover:scale-105 transition duration-300">
+                    <h3 class="text-2xl font-semibold text-purple-600 mb-4">Lokalizácia a Transkreácia</h3>
+                    <p class="text-gray-600">
+                        Nejde len o preklad, ale o prispôsobenie obsahu pre konkrétny trh a kultúru.
+                        Zabezpečujeme, aby vaše posolstvo rezonovalo s cieľovým publikom, zachovávajúc pôvodný zámer a emócie.
+                    </p>
+                </div>
+                <!-- Service Card 3 -->
+                <div class="card transform hover:scale-105 transition duration-300">
+                    <h3 class="text-2xl font-semibold text-purple-600 mb-4">Súdne a Notársky Overené Preklady</h3>
+                    <p class="text-gray-600">
+                        Poskytujeme úradné preklady dokumentov s pečiatkou súdneho prekladateľa,
+                        ktoré sú akceptované štátnymi inštitúciami a úradmi po celom svete.
+                    </p>
+                </div>
+                <!-- Service Card 4 -->
+                <div class="card transform hover:scale-105 transition duration-300">
+                    <h3 class="text-2xl font-semibold text-purple-600 mb-4">Expresné Preklady</h3>
+                    <p class="text-gray-600">
+                        Pre naliehavé projekty ponúkame expresné preklady s garantovaným doručením
+                        v rekordne krátkom čase, bez kompromisov na kvalite.
+                    </p>
+                </div>
+                <!-- Service Card 5 -->
+                <div class="card transform hover:scale-105 transition duration-300">
+                    <h3 class="text-2xl font-semibold text-purple-600 mb-4">Korektúry Rodeným Hovorcom</h3>
+                    <p class="text-gray-600">
+                        Každý preklad prechádza finálnou korektúrou rodeným hovorcom,
+                        aby sa zabezpečila maximálna plynulosť, prirodzenosť a bezchybnosť textu.
+                    </p>
+                </div>
+                <!-- Service Card 6 -->
+                <div class="card transform hover:scale-105 transition duration-300">
+                    <h3 class="text-2xl font-semibold text-purple-600 mb-4">Terminologická Správa</h3>
+                    <p class="text-gray-600">
+                        Vytvárame a spravujeme špecializované terminologické databázy pre našich klientov,
+                        čo zaručuje konzistentnosť a presnosť vo všetkých budúcich prekladoch.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Word Translator Section -->
+    <section id="word-translator" class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold text-indigo-700 mb-8 animate-fade-in-up">Prekladač slov</h2>
+            <p class="text-lg max-w-3xl mx-auto mb-10 animate-fade-in-up delay-100">
+                Potrebujete rýchlo preložiť jedno slovo? Využite náš prémiový prekladač slov.
+                Prekladáme do mnohých svetových jazykov, aj keď kompletný zoznam všetkých jazykov sveta je nepraktický,
+                snažíme sa pokryť tie najdôležitejšie.
+            </p>
+            <div class="card max-w-xl mx-auto p-8 animate-fade-in-up delay-200">
+                <div id="translatorContent" class="hidden">
+                    <div class="mb-6">
+                        <label for="wordInput" class="block text-left text-lg font-medium text-gray-700 mb-2">Zadajte slovo:</label>
+                        <input type="text" id="wordInput" placeholder="Zadajte slovo na preklad..."
+                               class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    <div class="mb-6">
+                        <label for="languageSelect" class="block text-left text-lg font-medium text-gray-700 mb-2">Vyberte cieľový jazyk:</label>
+                        <select id="languageSelect"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            <option value="en">Angličtina</option>
+                            <option value="de">Nemčina</option>
+                            <option value="fr">Francúzština</option>
+                            <option value="es">Španielčina</option>
+                            <option value="it">Taliančina</option>
+                            <option value="ru">Ruština</option>
+                            <option value="zh">Čínština (mandarínska)</option>
+                            <option value="ja">Japončina</option>
+                            <option value="ar">Arabčina</option>
+                            <option value="pt">Portugalčina</option>
+                            <option value="ko">Kórejčina</option>
+                            <option value="sk">Slovenčina</option>
+                            <!-- Add more languages as needed -->
+                        </select>
+                    </div>
+                    <button id="translateButton" class="btn-primary w-full py-3">Preložiť slovo</button>
+                    <div id="translationResult" class="mt-8 text-2xl font-semibold text-indigo-700 min-h-[40px] flex items-center justify-center">
+                        <!-- Translation will appear here -->
+                        <button id="speakTranslatedWord" class="speak-button hidden" aria-label="Prehrať preložené slovo">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3.93-3.07 7.1-7 7.1-3.93 0-7-3.17-7-7.1H3c0 4.42 3.58 8.01 8 8.01v3h2v-3c4.42 0 8-3.59 8-8.01h-2.7z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="loadingIndicator" class="hidden mt-4 text-gray-500">
+                        Prekladám...
+                    </div>
+                </div>
+                <div id="paymentWall" class="text-center p-4">
+                    <p class="text-xl font-semibold text-red-600 mb-4">Prekladateľ je prístupný len pre predplatiteľov.</p>
+                    <p class="text-md text-gray-700 mb-6">Pre odomknutie tejto prémiovej funkcie si prosím zakúpte jeden z našich ročných balíčkov.</p>
+                    <button id="unlockTranslatorButton" class="btn-primary">Odomknúť prekladač</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Packages Section -->
+    <section id="packages" class="py-16 bg-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold text-indigo-700 mb-12">Naše Prémiové Ročné Balíčky</h2>
+            <p class="text-lg max-w-4xl mx-auto leading-relaxed mb-10">
+                Vyberte si balíček, ktorý najlepšie vyhovuje vašim potrebám. Každý balíček poskytuje ročný prístup
+                k nášmu prémiovému prekladaču slov a ďalším exkluzívnym výhodám.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Package 1 -->
+                <div class="package-card">
+                    <h3 class="text-2xl font-bold text-indigo-700 mb-2">Základný</h3>
+                    <p class="text-4xl font-extrabold text-purple-600 mb-4">€199<span class="text-xl font-normal text-gray-500">/rok</span></p>
+                    <ul class="text-gray-600 text-left mb-6 space-y-2">
+                        <li>&#10003; Neobmedzené preklady slov</li>
+                        <li>&#10003; Prístup k 10 jazykom</li>
+                        <li>&#10003; Základná podpora</li>
+                    </ul>
+                    <button class="btn-primary w-full purchase-package-btn">Zakúpiť</button>
+                </div>
+                <!-- Package 2 -->
+                <div class="package-card">
+                    <h3 class="text-2xl font-bold text-indigo-700 mb-2">Štandardný</h3>
+                    <p class="text-4xl font-extrabold text-purple-600 mb-4">€349<span class="text-xl font-normal text-gray-500">/rok</span></p>
+                    <ul class="text-gray-600 text-left mb-6 space-y-2">
+                        <li>&#10003; Všetko zo Základného</li>
+                        <li>&#10003; Prístup k 25 jazykom</li>
+                        <li>&#10003; Prioritná podpora</li>
+                    </ul>
+                    <button class="btn-primary w-full purchase-package-btn">Zakúpiť</button>
+                </div>
+                <!-- Package 3 (Recommended) -->
+                <div class="package-card recommended">
+                    <h3 class="text-2xl font-bold mb-2">Profesionálny</h3>
+                    <p class="text-4xl font-extrabold mb-4">€599<span class="text-xl font-normal text-gray-600">/rok</span></p>
+                    <ul class="text-gray-700 text-left mb-6 space-y-2">
+                        <li>&#10003; Všetko zo Štandardného</li>
+                        <li>&#10003; Prístup k 50+ jazykom</li>
+                        <li>&#10003; VIP podpora 24/7</li>
+                        <li>&#10003; Historie prekladov</li>
+                    </ul>
+                    <button class="btn-primary w-full purchase-package-btn">Zakúpiť</button>
+                </div>
+                <!-- Package 4 -->
+                <div class="package-card">
+                    <h3 class="text-2xl font-bold text-indigo-700 mb-2">Firemný</h3>
+                    <p class="text-4xl font-extrabold text-purple-600 mb-4">€999<span class="text-xl font-normal text-gray-500">/rok</span></p>
+                    <ul class="text-gray-600 text-left mb-6 space-y-2">
+                        <li>&#10003; Všetko z Profesionálneho</li>
+                        <li>&#10003; Prístup k všetkým jazykom</li>
+                        <li>&#10003; Viac užívateľských účtov</li>
+                        <li>&#10003; Osobný manažér účtu</li>
+                    </ul>
+                    <button class="btn-primary w-full purchase-package-btn">Zakúpiť</button>
+                </div>
+                <!-- Package 5 -->
+                <div class="package-card">
+                    <h3 class="text-2xl font-bold text-indigo-700 mb-2">Enterprise S</h3>
+                    <p class="text-4xl font-extrabold text-purple-600 mb-4">€1499<span class="text-xl font-normal text-gray-500">/rok</span></p>
+                    <ul class="text-gray-600 text-left mb-6 space-y-2">
+                        <li>&#10003; Všetko z Firemného</li>
+                        <li>&#10003; Rozšírené API pre integráciu</li>
+                        <li>&#10003; Školenie tímu</li>
+                    </ul>
+                    <button class="btn-primary w-full purchase-package-btn">Zakúpiť</button>
+                </div>
+                <!-- Package 6 -->
+                <div class="package-card">
+                    <h3 class="text-2xl font-bold text-indigo-700 mb-2">Enterprise M</h3>
+                    <p class="text-4xl font-extrabold text-purple-600 mb-4">€1999<span class="text-xl font-normal text-gray-500">/rok</span></p>
+                    <ul class="text-gray-600 text-left mb-6 space-y-2">
+                        <li>&#10003; Všetko z Enterprise S</li>
+                        <li>&#10003; Dedikovaný server</li>
+                        <li>&#10003; Pokročilé štatistiky</li>
+                    </ul>
+                    <button class="btn-primary w-full purchase-package-btn">Zakúpiť</button>
+                </div>
+                <!-- Package 7 -->
+                <div class="package-card">
+                    <h3 class="text-2xl font-bold text-indigo-700 mb-2">Enterprise L</h3>
+                    <p class="text-4xl font-extrabold text-purple-600 mb-4">€2499<span class="text-xl font-normal text-gray-500">/rok</span></p>
+                    <ul class="text-gray-600 text-left mb-6 space-y-2">
+                        <li>&#10003; Všetko z Enterprise M</li>
+                        <li>&#10003; Prispôsobené riešenia</li>
+                        <li>&#10003; Non-stop technická podpora</li>
+                    </ul>
+                    <button class="btn-primary w-full purchase-package-btn">Zakúpiť</button>
+                </div>
+                <!-- Package 8 -->
+                <div class="package-card">
+                    <h3 class="text-2xl font-bold text-indigo-700 mb-2">Ultimate</h3>
+                    <p class="text-4xl font-extrabold text-purple-600 mb-4">€3999<span class="text-xl font-normal text-gray-500">/rok</span></p>
+                    <ul class="text-gray-600 text-left mb-6 space-y-2">
+                        <li>&#10003; Všetko z Enterprise L</li>
+                        <li>&#10003; Exkluzívne beta funkcie</li>
+                        <li>&#10003; Prioritný prístup k novinkám</li>
+                    </ul>
+                    <button class="btn-primary w-full purchase-package-btn">Zakúpiť</button>
+                </div>
+                <!-- Package 9 -->
+                <div class="package-card">
+                    <h3 class="text-2xl font-bold text-indigo-700 mb-2">Platinový</h3>
+                    <p class="text-4xl font-extrabold text-purple-600 mb-4">€5999<span class="text-xl font-normal text-gray-500">/rok</span></p>
+                    <ul class="text-gray-600 text-left mb-6 space-y-2">
+                        <li>&#10003; Všetko z Ultimate</li>
+                        <li>&#10003; Osobné konzultácie s lingvistami</li>
+                        <li>&#10003; Vyhradený tím pre váš projekt</li>
+                    </ul>
+                    <button class="btn-primary w-full purchase-package-btn">Zakúpiť</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold text-indigo-700 mb-8">Cenník: Investícia do Kvality</h2>
+            <p class="text-lg max-w-4xl mx-auto leading-relaxed mb-8">
+                Na PrekladGAMEPLA631 veríme, že **bezkonkurenčná kvalita si zaslúži bezkonkurenčnú cenu**.
+                Naše služby sú určené pre klientov, ktorí hľadajú tú najvyššiu úroveň prekladateľskej excelencie
+                a sú ochotní investovať do dokonalosti. Nejde o masovú produkciu, ale o individuálny prístup
+                a precíznu prácu, ktorá sa odráža v každom slove.
+            </p>
+            <div class="card max-w-2xl mx-auto">
+                <h3 class="text-3xl font-bold text-indigo-600 mb-4">Naše ceny sú prémiové.</h3>
+                <p class="text-xl text-gray-700 mb-6">
+                    Cena prekladu sa určuje individuálne na základe komplexnosti textu, jazykovej kombinácie,
+                    požadovanej odbornosti a termínu dodania.
+                </p>
+                <p class="text-lg text-gray-600 mb-8">
+                    Pre presnú cenovú ponuku a konzultáciu vášho projektu nás prosím kontaktujte.
+                    Radi vám pripravíme ponuku šitú na mieru vašim špecifickým požiadavkám.
+                </p>
+                <a href="#contact" class="btn-primary">
+                    Získajte cenovú ponuku
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold text-indigo-700 mb-8">Kontaktujte Nás</h2>
+            <p class="text-lg max-w-3xl mx-auto mb-10">
+                Ste pripravení investovať do najlepších prekladateľských služieb?
+                Kontaktujte nás a prediskutujte svoje požiadavky.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-8">
+                <div class="card w-full md:w-1/3">
+                    <h3 class="text-2xl font-semibold text-purple-600 mb-3">E-mail</h3>
+                    <p class="text-lg text-gray-700">kralhororoviek@gmail.com</p>
+                </div>
+                <div class="card w-full md:w-1/3">
+                    <h3 class="text-2xl font-semibold text-purple-600 mb-3">Telefón</h3>
+                    <p class="text-lg text-gray-700">+421 951 632 704</p>
+                </div>
+                <div class="card w-full md:w-1/3">
+                    <h3 class="text-2xl font-semibold text-purple-600 mb-3">Autor</h3>
+                    <p class="text-lg text-gray-700">Kristián Stareček</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-800 text-white py-8 mt-auto">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 Preklad GAMEPLA631. Všetky práva vyhradené. | Prémiové preklady pre prémiových klientov.</p>
+        </div>
+    </footer>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-button" id="closeModal">&times;</span>
+            <h2 class="text-3xl font-bold text-indigo-700 mb-6 text-center">Vyberte si svoj prémiový balíček</h2>
+            <p class="text-lg text-gray-700 mb-8 text-center">
+                Pre prístup k nášmu exkluzívnemu prekladaču slov a ďalším výhodám si prosím vyberte jeden z našich ročných balíčkov.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Modal Package 1 -->
+                <div class="package-card">
+                    <h3 class="text-xl font-bold text-indigo-700 mb-2">Základný</h3>
+                    <p class="text-3xl font-extrabold text-purple-600 mb-2">€199<span class="text-base font-normal text-gray-500">/rok</span></p>
+                    <p class="text-sm text-gray-600 mb-4">Neobmedzené preklady slov, 10 jazykov.</p>
+                    <button class="btn-primary w-full purchase-modal-btn" data-package="Základný">Zakúpiť</button>
+                </div>
+                <!-- Modal Package 2 -->
+                <div class="package-card">
+                    <h3 class="text-xl font-bold text-indigo-700 mb-2">Štandardný</h3>
+                    <p class="text-3xl font-extrabold text-purple-600 mb-2">€349<span class="text-base font-normal text-gray-500">/rok</span></p>
+                    <p class="text-sm text-gray-600 mb-4">25 jazykov, prioritná podpora.</p>
+                    <button class="btn-primary w-full purchase-modal-btn" data-package="Štandardný">Zakúpiť</button>
+                </div>
+                <!-- Modal Package 3 (Recommended) -->
+                <div class="package-card recommended">
+                    <h3 class="text-xl font-bold mb-2">Profesionálny</h3>
+                    <p class="text-3xl font-extrabold mb-2">€599<span class="text-base font-normal text-gray-600">/rok</span></p>
+                    <p class="text-sm text-gray-700 mb-4">50+ jazykov, VIP podpora, história.</p>
+                    <button class="btn-primary w-full purchase-modal-btn" data-package="Profesionálny">Zakúpiť</button>
+                </div>
+                <!-- Modal Package 4 -->
+                <div class="package-card">
+                    <h3 class="text-xl font-bold text-indigo-700 mb-2">Firemný</h3>
+                    <p class="text-3xl font-extrabold text-purple-600 mb-2">€999<span class="text-base font-normal text-gray-500">/rok</span></p>
+                    <ul class="text-gray-600 text-left mb-6 space-y-2">
+                        <li>&#10003; Všetko z Profesionálneho</li>
+                        <li>&#10003; Prístup k všetkým jazykom</li>
+                        <li>&#10003; Viac užívateľských účtov</li>
+                        <li>&#10003; Osobný manažér účtu</li>
+                    </ul>
+                    <button class="btn-primary w-full purchase-modal-btn" data-package="Firemný">Zakúpiť</button>
+                </div>
+                <!-- Modal Package 5 -->
+                <div class="package-card">
+                    <h3 class="text-xl font-bold text-indigo-700 mb-2">Enterprise S</h3>
+                    <p class="text-3xl font-extrabold text-purple-600 mb-2">€1499<span class="text-base font-normal text-gray-500">/rok</span></p>
+                    <ul class="text-gray-600 text-left mb-6 space-y-2">
+                        <li>&#10003; Všetko z Firemného</li>
+                        <li>&#10003; Rozšírené API pre integráciu</li>
+                        <li>&#10003; Školenie tímu</li>
+                    </ul>
+                    <button class="btn-primary w-full purchase-modal-btn" data-package="Enterprise S">Zakúpiť</button>
+                </div>
+                <!-- Modal Package 6 -->
+                <div class="package-card">
+                    <h3 class="text-xl font-bold text-indigo-700 mb-2">Enterprise M</h3>
+                    <p class="text-3xl font-extrabold text-purple-600 mb-2">€1999<span class="text-base font-normal text-gray-500">/rok</span></p>
+                    <ul class="text-gray-600 text-left mb-6 space-y-2">
+                        <li>&#10003; Všetko z Enterprise S</li>
+                        <li>&#10003; Dedikovaný server</li>
+                        <li>&#10003; Pokročilé štatistiky</li>
+                    </ul>
+                    <button class="btn-primary w-full purchase-modal-btn" data-package="Enterprise M">Zakúpiť</button>
+                </div>
+                <!-- Modal Package 7 -->
+                <div class="package-card">
+                    <h3 class="text-xl font-bold text-indigo-700 mb-2">Enterprise L</h3>
+                    <p class="text-3xl font-extrabold text-purple-600 mb-2">€2499<span class="text-base font-normal text-gray-500">/rok</span></p>
+                    <ul class="text-gray-600 text-left mb-6 space-y-2">
+                        <li>&#10003; Všetko z Enterprise M</li>
+                        <li>&#10003; Prispôsobené riešenia</li>
+                        <li>&#10003; Non-stop technická podpora</li>
+                    </ul>
+                    <button class="btn-primary w-full purchase-modal-btn" data-package="Enterprise L">Zakúpiť</button>
+                </div>
+                <!-- Modal Package 8 -->
+                <div class="package-card">
+                    <h3 class="text-xl font-bold text-indigo-700 mb-2">Ultimate</h3>
+                    <p class="text-3xl font-extrabold text-purple-600 mb-2">€3999<span class="text-base font-normal text-gray-500">/rok</span></p>
+                    <ul class="text-gray-600 text-left mb-6 space-y-2">
+                        <li>&#10003; Všetko z Enterprise L</li>
+                        <li>&#10003; Exkluzívne beta funkcie</li>
+                        <li>&#10003; Prioritný prístup k novinkám</li>
+                    </ul>
+                    <button class="btn-primary w-full purchase-modal-btn" data-package="Ultimate">Zakúpiť</button>
+                </div>
+                <!-- Modal Package 9 -->
+                <div class="package-card">
+                    <h3 class="text-xl font-bold text-indigo-700 mb-2">Platinový</h3>
+                    <p class="text-3xl font-extrabold text-purple-600 mb-2">€5999<span class="text-base font-normal text-gray-500">/rok</span></p>
+                    <ul class="text-gray-600 text-left mb-6 space-y-2">
+                        <li>&#10003; Všetko z Ultimate</li>
+                        <li>&#10003; Osobné konzultácie s lingvistami</li>
+                        <li>&#10003; Vyhradený tím pre váš projekt</li>
+                    </ul>
+                    <button class="btn-primary w-full purchase-modal-btn" data-package="Platinový">Zakúpiť</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const wordInput = document.getElementById('wordInput');
+            const languageSelect = document.getElementById('languageSelect');
+            const translateButton = document.getElementById('translateButton');
+            const translationResult = document.getElementById('translationResult');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const translatorContent = document.getElementById('translatorContent');
+            const paymentWall = document.getElementById('paymentWall');
+            const unlockTranslatorButton = document.getElementById('unlockTranslatorButton');
+            const paymentModal = document.getElementById('paymentModal');
+            const closeModalButton = document.getElementById('closeModal');
+            const purchasePackageButtons = document.querySelectorAll('.purchase-package-btn');
+            const purchaseModalButtons = document.querySelectorAll('.purchase-modal-btn');
+            const speakTranslatedWordButton = document.getElementById('speakTranslatedWord');
+
+            let isPaidUser = false; // Simulated payment status
+            let lastTranslatedText = ''; // Stores the last translated text
+            let lastTargetLanguage = ''; // Stores the last target language code
+
+            // Function to update translator visibility
+            function updateTranslatorVisibility() {
+                if (isPaidUser) {
+                    translatorContent.classList.remove('hidden');
+                    paymentWall.classList.add('hidden');
+                } else {
+                    translatorContent.classList.add('hidden');
+                    paymentWall.classList.remove('hidden');
+                }
+            }
+
+            // Function to speak the text
+            function speakText(text, lang) {
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = lang; // Set language for correct pronunciation
+                    speechSynthesis.speak(utterance);
+                } else {
+                    console.warn('Web Speech API (SpeechSynthesis) nie je podporované vo vašom prehliadači.');
+                }
+            }
+
+            // Initial check on page load
+            updateTranslatorVisibility();
+
+            unlockTranslatorButton.addEventListener('click', () => {
+                paymentModal.classList.add('show');
+            });
+
+            closeModalButton.addEventListener('click', () => {
+                paymentModal.classList.remove('show');
+            });
+
+            // Close modal when clicking outside content
+            paymentModal.addEventListener('click', (e) => {
+                if (e.target === paymentModal) {
+                    paymentModal.classList.remove('show');
+                }
+            });
+
+            // Simulate package purchase
+            purchasePackageButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const packageName = e.target.dataset.package;
+                    alert(`Ďakujeme! Zakúpili ste si balíček: ${packageName}. (Toto je len simulácia platby)`);
+                    isPaidUser = true; // Set user as paid
+                    updateTranslatorVisibility();
+                    // In a real app, you would redirect to payment gateway or process payment
+                });
+            });
+
+            purchaseModalButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const packageName = e.target.dataset.package;
+                    alert(`Ďakujeme! Zakúpili ste si balíček: ${packageName}. (Toto je len simulácia platby)`);
+                    isPaidUser = true; // Set user as paid
+                    paymentModal.classList.remove('show'); // Close modal
+                    updateTranslatorVisibility();
+                    // In a real app, you would redirect to payment gateway or process payment
+                });
+            });
+
+            speakTranslatedWordButton.addEventListener('click', () => {
+                if (lastTranslatedText && lastTargetLanguage) {
+                    speakText(lastTranslatedText, lastTargetLanguage);
+                }
+            });
+
+            translateButton.addEventListener('click', async () => {
+                if (!isPaidUser) {
+                    translationResult.innerHTML = 'Preklad je dostupný len pre predplatiteľov. Prosím, zakúpte si balíček.';
+                    translationResult.classList.remove('text-indigo-700');
+                    translationResult.classList.add('text-red-600');
+                    speakTranslatedWordButton.classList.add('hidden'); // Hide speaker button
+                    paymentModal.classList.add('show'); // Show modal if not paid
+                    return;
+                }
+
+                const word = wordInput.value.trim();
+                const targetLanguage = languageSelect.value;
+                const targetLanguageName = languageSelect.options[languageSelect.selectedIndex].text;
+
+                if (!word) {
+                    translationResult.innerHTML = 'Prosím, zadajte slovo na preklad.';
+                    translationResult.classList.remove('text-indigo-700');
+                    translationResult.classList.add('text-red-600');
+                    speakTranslatedWordButton.classList.add('hidden'); // Hide speaker button
+                    return;
+                }
+
+                translationResult.innerHTML = ''; // Clear previous result and button
+                loadingIndicator.classList.remove('hidden');
+                translationResult.classList.remove('text-red-600');
+                translationResult.classList.add('text-indigo-700');
+                speakTranslatedWordButton.classList.add('hidden'); // Hide speaker button during loading
+
+                try {
+                    // Construct the prompt for the Gemini API
+                    const prompt = `Preložte slovo "${word}" do ${targetLanguageName} (${targetLanguage}). Poskytnite iba preložené slovo, bez ďalšieho textu alebo vysvetlení.`;
+
+                    let chatHistory = [];
+                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+
+                    const payload = { contents: chatHistory };
+                    const apiKey = "AIzaSyD0OIR4P5gjUBvVJfWUSYZmQGck_aKoVv8"; // Váš API kľúč
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await response.json();
+
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const translatedText = result.candidates[0].content.parts[0].text.trim();
+                        lastTranslatedText = translatedText; // Store for replay
+                        lastTargetLanguage = targetLanguage; // Store for replay
+
+                        translationResult.innerHTML = `Preklad: "${translatedText}"`;
+                        speakTranslatedWordButton.classList.remove('hidden'); // Show speaker button
+                        speakText(translatedText, targetLanguage); // Speak automatically
+                    } else {
+                        // If translation fails or response is unexpected, just clear the result area
+                        translationResult.innerHTML = ''; // Clear the result
+                        translationResult.classList.remove('text-red-600'); // Remove error styling
+                        translationResult.classList.add('text-indigo-700'); // Re-apply default styling
+                        speakTranslatedWordButton.classList.add('hidden'); // Hide speaker button
+                    }
+                } catch (error) {
+                    console.error('Chyba pri preklade:', error);
+                    // If an error occurs, just clear the result area
+                    translationResult.innerHTML = ''; // Clear the result
+                    translationResult.classList.remove('text-red-600'); // Remove error styling
+                    translationResult.classList.add('text-indigo-700'); // Re-apply default styling
+                    speakTranslatedWordButton.classList.add('hidden'); // Hide speaker button
+                } finally {
+                    loadingIndicator.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
