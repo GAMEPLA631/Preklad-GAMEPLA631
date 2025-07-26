@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Preklad GAMEPLA631 - Prémiové Preklady</title>
+    <title>Preklad GAMEPLA631 - Bezplatné Preklady</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts - Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -42,54 +42,6 @@
         .delay-300 { animation-delay: 0.3s; }
         .delay-400 { animation-delay: 0.4s; }
 
-        /* Modal specific styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-        .modal-overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
-        .modal-content {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            max-width: 90%;
-            width: 700px;
-            transform: translateY(-20px);
-            transition: transform 0.3s ease;
-            position: relative;
-        }
-        .modal-overlay.show .modal-content {
-            transform: translateY(0);
-        }
-        .close-button {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #64748b;
-        }
-        .package-card {
-            @apply bg-gray-50 p-4 rounded-lg border border-gray-200 text-center flex flex-col justify-between;
-        }
-        .package-card.recommended {
-            @apply border-purple-500 border-2 bg-purple-50 text-purple-800;
-        }
         .speak-button {
             background: none;
             border: none;
@@ -103,32 +55,9 @@
             height: 24px;
             fill: #4c51bf; /* Indigo 600 */
         }
-        /* Style for the payment success message */
-        .payment-success-message {
-            @apply fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-green-100 text-green-800 p-3 rounded-lg text-center font-semibold shadow-lg;
-            opacity: 0;
-            transition: opacity 0.5s ease-out;
-            min-width: 250px; /* Ensure it's wide enough */
-        }
-        .payment-success-message.show {
-            opacity: 1;
-        }
-        /* Style for the payment error message */
-        .payment-error-message {
-            @apply fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-red-100 text-red-800 p-3 rounded-lg text-center font-semibold shadow-lg;
-            opacity: 0;
-            transition: opacity 0.5s ease-out;
-            min-width: 250px; /* Ensure it's wide enough */
-        }
-        .payment-error-message.show {
-            opacity: 1;
-        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
-    <!-- Global Payment Success/Error Message -->
-    <div id="paymentSuccessMessage" class="payment-success-message hidden"></div>
-
     <!-- Header Section -->
     <header class="bg-white shadow-md py-4">
         <div class="container mx-auto px-4 flex justify-between items-center">
@@ -138,8 +67,6 @@
                     <li><a href="#about" class="text-gray-700 hover:text-indigo-600 font-medium">O nás</a></li>
                     <li><a href="#services" class="text-gray-700 hover:text-indigo-600 font-medium">Služby</a></li>
                     <li><a href="#word-translator" class="text-gray-700 hover:text-indigo-600 font-medium">Prekladač slov</a></li>
-                    <li><a href="#packages" class="text-gray-700 hover:text-indigo-600 font-medium">Balíčky</a></li>
-                    <li><a href="#pricing" class="text-gray-700 hover:text-indigo-600 font-medium">Cenník</a></li>
                     <li><a href="#contact" class="text-gray-700 hover:text-indigo-600 font-medium">Kontakt</a></li>
                 </ul>
             </nav>
@@ -154,10 +81,10 @@
             </h1>
             <p class="text-xl md:text-2xl mb-10 max-w-3xl mx-auto opacity-90 animate-fade-in-up delay-200">
                 PrekladGAMEPLA631 je synonymom pre luxusné prekladateľské služby.
-                Investujte do dokonalosti, ktorá sa vyplatí.
+                Teraz úplne zadarmo!
             </p>
             <a href="#contact" class="btn-primary animate-fade-in-up delay-400">
-                Vyžiadajte si exkluzívnu ponuku
+                Kontaktujte nás
             </a>
         </div>
     </section>
@@ -238,12 +165,12 @@
         <div class="container mx-auto px-4 text-center">
             <h2 class="text-4xl font-bold text-indigo-700 mb-8 animate-fade-in-up">Prekladač slov</h2>
             <p class="text-lg max-w-3xl mx-auto mb-10 animate-fade-in-up delay-100">
-                Potrebujete rýchlo preložiť jedno slovo? Využite náš prémiový prekladač slov.
+                Potrebujete rýchlo preložiť jedno slovo? Využite náš bezplatný prekladač slov.
                 Prekladáme do mnohých svetových jazykov, aj keď kompletný zoznam všetkých jazykov sveta je nepraktický,
                 snažíme sa pokryť tie najdôležitejšie.
             </p>
             <div class="card max-w-xl mx-auto p-8 animate-fade-in-up delay-200">
-                <div id="translatorContent" class="hidden">
+                <div id="translatorContent">
                     <div class="mb-6">
                         <label for="wordInput" class="block text-left text-lg font-medium text-gray-700 mb-2">Zadajte slovo:</label>
                         <input type="text" id="wordInput" placeholder="Zadajte slovo na preklad..."
@@ -281,167 +208,21 @@
                         Prekladám...
                     </div>
                 </div>
-                <div id="paymentWall" class="text-center p-4">
-                    <p class="text-xl font-semibold text-red-600 mb-4">Prekladateľ je prístupný len pre predplatiteľov.</p>
-                    <p class="text-md text-gray-700 mb-6">Pre odomknutie tejto prémiovej funkcie si prosím zakúpte jeden z našich ročných balíčkov.</p>
-                    <button id="unlockTranslatorButton" class="btn-primary">Odomknúť prekladač</button>
-                </div>
-                <div id="subscriptionStatus" class="mt-4 text-sm text-gray-600 hidden">
-                    <!-- Subscription status and expiration date will be displayed here -->
-                </div>
             </div>
         </div>
     </section>
 
-    <!-- Payment Packages Section -->
-    <section id="packages" class="py-16 bg-white">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-4xl font-bold text-indigo-700 mb-12">Naše Prémiové Ročné Balíčky</h2>
-            <p class="text-lg max-w-4xl mx-auto leading-relaxed mb-10">
-                Vyberte si balíček, ktorý najlepšie vyhovuje vašim potrebám. Každý balíček poskytuje ročný prístup
-                k nášmu prémiovému prekladaču slov a ďalším exkluzívnym výhodám.
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                <!-- Package 1 -->
-                <div class="package-card">
-                    <h3 class="text-2xl font-bold text-indigo-700 mb-2">Základný</h3>
-                    <p class="text-4xl font-extrabold text-purple-600 mb-4">€199<span class="text-xl font-normal text-gray-500">/rok</span></p>
-                    <ul class="text-gray-600 text-left mb-6 space-y-2">
-                        <li>&#10003; Neobmedzené preklady slov</li>
-                        <li>&#10003; Prístup k 10 jazykom</li>
-                        <li>&#10003; Základná podpora</li>
-                    </ul>
-                    <button class="btn-primary w-full purchase-package-btn" data-package="Základný">Zakúpiť</button>
-                </div>
-                <!-- Package 2 -->
-                <div class="package-card">
-                    <h3 class="text-2xl font-bold text-indigo-700 mb-2">Štandardný</h3>
-                    <p class="text-4xl font-extrabold text-purple-600 mb-4">€349<span class="text-xl font-normal text-gray-500">/rok</span></p>
-                    <ul class="text-gray-600 text-left mb-6 space-y-2">
-                        <li>&#10003; Všetko zo Základného</li>
-                        <li>&#10003; Prístup k 25 jazykom</li>
-                        <li>&#10003; Prioritná podpora</li>
-                    </ul>
-                    <button class="btn-primary w-full purchase-package-btn" data-package="Štandardný">Zakúpiť</button>
-                </div>
-                <!-- Package 3 (Recommended) -->
-                <div class="package-card recommended">
-                    <h3 class="2xl font-bold mb-2">Profesionálny</h3>
-                    <p class="text-4xl font-extrabold mb-4">€599<span class="text-xl font-normal text-gray-600">/rok</span></p>
-                    <ul class="text-gray-700 text-left mb-6 space-y-2">
-                        <li>&#10003; Všetko zo Štandardného</li>
-                        <li>&#10003; Prístup k 50+ jazykom</li>
-                        <li>&#10003; VIP podpora 24/7</li>
-                        <li>&#10003; Historie prekladov</li>
-                    </ul>
-                    <button class="btn-primary w-full purchase-package-btn" data-package="Profesionálny">Zakúpiť</button>
-                </div>
-                <!-- Package 4 -->
-                <div class="package-card">
-                    <h3 class="text-2xl font-bold text-indigo-700 mb-2">Firemný</h3>
-                    <p class="text-4xl font-extrabold text-purple-600 mb-4">€999<span class="text-xl font-normal text-gray-500">/rok</span></p>
-                    <ul class="text-gray-600 text-left mb-6 space-y-2">
-                        <li>&#10003; Všetko z Profesionálneho</li>
-                        <li>&#10003; Prístup k všetkým jazykom</li>
-                        <li>&#10003; Viac užívateľských účtov</li>
-                        <li>&#10003; Osobný manažér účtu</li>
-                    </ul>
-                    <button class="btn-primary w-full purchase-package-btn" data-package="Firemný">Zakúpiť</button>
-                </div>
-                <!-- Package 5 -->
-                <div class="package-card">
-                    <h3 class="text-2xl font-bold text-indigo-700 mb-2">Enterprise S</h3>
-                    <p class="text-4xl font-extrabold text-purple-600 mb-4">€1499<span class="text-xl font-normal text-gray-500">/rok</span></p>
-                    <ul class="text-gray-600 text-left mb-6 space-y-2">
-                        <li>&#10003; Všetko z Firemného</li>
-                        <li>&#10003; Rozšírené API pre integráciu</li>
-                        <li>&#10003; Školenie tímu</li>
-                    </ul>
-                    <button class="btn-primary w-full purchase-package-btn" data-package="Enterprise S">Zakúpiť</button>
-                </div>
-                <!-- Package 6 -->
-                <div class="package-card">
-                    <h3 class="text-2xl font-bold text-indigo-700 mb-2">Enterprise M</h3>
-                    <p class="text-4xl font-extrabold text-purple-600 mb-4">€1999<span class="text-xl font-normal text-gray-500">/rok</span></p>
-                    <ul class="text-gray-600 text-left mb-6 space-y-2">
-                        <li>&#10003; Všetko z Enterprise S</li>
-                        <li>&#10003; Dedikovaný server</li>
-                        <li>&#10003; Pokročilé štatistiky</li>
-                    </ul>
-                    <button class="btn-primary w-full purchase-package-btn" data-package="Enterprise M">Zakúpiť</button>
-                </div>
-                <!-- Package 7 -->
-                <div class="package-card">
-                    <h3 class="text-2xl font-bold text-indigo-700 mb-2">Enterprise L</h3>
-                    <p class="text-4xl font-extrabold text-purple-600 mb-4">€2499<span class="text-xl font-normal text-gray-500">/rok</span></p>
-                    <ul class="text-gray-600 text-left mb-6 space-y-2">
-                        <li>&#10003; Všetko z Enterprise M</li>
-                        <li>&#10003; Prispôsobené riešenia</li>
-                        <li>&#10003; Non-stop technická podpora</li>
-                    </ul>
-                    <button class="btn-primary w-full purchase-package-btn" data-package="Enterprise L">Zakúpiť</button>
-                </div>
-                <!-- Package 8 -->
-                <div class="package-card">
-                    <h3 class="text-2xl font-bold text-indigo-700 mb-2">Ultimate</h3>
-                    <p class="text-4xl font-extrabold text-purple-600 mb-4">€3999<span class="text-xl font-normal text-gray-500">/rok</span></p>
-                    <ul class="text-gray-600 text-left mb-6 space-y-2">
-                        <li>&#10003; Všetko z Enterprise L</li>
-                        <li>&#10003; Exkluzívne beta funkcie</li>
-                        <li>&#10003; Prioritný prístup k novinkám</li>
-                    </ul>
-                    <button class="btn-primary w-full purchase-package-btn" data-package="Ultimate">Zakúpiť</button>
-                </div>
-                <!-- Package 9 -->
-                <div class="package-card">
-                    <h3 class="text-2xl font-bold text-indigo-700 mb-2">Platinový</h3>
-                    <p class="text-4xl font-extrabold text-purple-600 mb-4">€5999<span class="text-xl font-normal text-gray-500">/rok</span></p>
-                    <ul class="text-gray-600 text-left mb-6 space-y-2">
-                        <li>&#10003; Všetko z Ultimate</li>
-                        <li>&#10003; Osobné konzultácie s lingvistami</li>
-                        <li>&#10003; Vyhradený tím pre váš projekt</li>
-                    </ul>
-                    <button class="btn-primary w-full purchase-package-btn" data-package="Platinový">Zakúpiť</button>
-                </div>
-                <!-- New Package: Battle Pass Basic -->
-                <div class="package-card bg-blue-50 border-blue-500 border-2">
-                    <h3 class="text-2xl font-bold text-blue-700 mb-2">Battle Pass Basic</h3>
-                    <p class="text-4xl font-extrabold text-blue-600 mb-4">Kód</p>
-                    <ul class="text-gray-600 text-left mb-6 space-y-2">
-                        <li>&#10003; Prístup k prekladaču slov</li>
-                        <li>&#10003; 1 rok predplatného</li>
-                        <li>&#10003; Exkluzívny odznak v profile</li>
-                    </ul>
-                    <button class="btn-primary w-full purchase-package-btn" data-package="Battle Pass Basic" data-purchase-type="battle-code">Aktivovať kódom</button>
-                </div>
-                <!-- New Package: Battle Pass Premium -->
-                <div class="package-card bg-yellow-50 border-yellow-500 border-2">
-                    <h3 class="text-2xl font-bold text-yellow-700 mb-2">Battle Pass Premium</h3>
-                    <p class="text-4xl font-extrabold text-yellow-600 mb-4">Kód</p>
-                    <ul class="text-gray-600 text-left mb-6 space-y-2">
-                        <li>&#10003; Všetko z Battle Pass Basic</li>
-                        <li>&#10003; Prístup k 25 jazykom</li>
-                        <li>&#10003; Prioritná podpora</li>
-                        <li>&#10003; Zlatý odznak v profile</li>
-                    </ul>
-                    <button class="btn-primary w-full purchase-package-btn" data-package="Battle Pass Premium" data-purchase-type="battle-code">Aktivovať kódom</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
+    <!-- Pricing Section (Content simplified as no direct purchase) -->
     <section id="pricing" class="py-16 bg-gray-50">
         <div class="container mx-auto px-4 text-center">
             <h2 class="text-4xl font-bold text-indigo-700 mb-8">Cenník: Investícia do Kvality</h2>
             <p class="text-lg max-w-4xl mx-auto leading-relaxed mb-8">
                 Na PrekladGAMEPLA631 veríme, že **bezkonkurenčná kvalita si zaslúži bezkonkurenčnú cenu**.
-                Naše služby sú určené pre klientov, ktorí hľadajú tú najvyššiu úroveň prekladateľskej excelencie
-                a sú ochotní investovať do dokonalosti. Nejde o masovú produkciu, ale o individuálny prístup
-                a precíznu prácu, ktorá sa odráža v každom slove.
+                Naše služby sú určené pre klientov, ktorí hľadajú tú najvyššiu úroveň prekladateľskej excelencie.
+                Prekladateľ slov je teraz úplne zadarmo pre všetkých!
             </p>
             <div class="card max-w-2xl mx-auto">
-                <h3 class="text-3xl font-bold text-indigo-600 mb-4">Naše ceny sú prémiové.</h3>
+                <h3 class="text-3xl font-bold text-indigo-600 mb-4">Naše prémiové služby sú dostupné.</h3>
                 <p class="text-xl text-gray-700 mb-6">
                     Cena prekladu sa určuje individuálne na základe komplexnosti textu, jazykovej kombinácie,
                     požadovanej odbornosti a termínu dodania.
@@ -489,184 +270,8 @@
         </div>
     </footer>
 
-    <!-- Payment Modal -->
-    <div id="paymentModal" class="modal-overlay">
-        <div class="modal-content">
-            <span class="close-button" id="closeModal">&times;</span>
-            <h2 class="text-3xl font-bold text-indigo-700 mb-6 text-center">Vyberte si svoj prémiový balíček</h2>
-            <p class="text-lg text-gray-700 mb-8 text-center">
-                Pre prístup k nášmu exkluzívnemu prekladaču slov a ďalším výhodám si prosím vyberte jeden z našich ročných balíčkov alebo aktivujte kód.
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Modal Package 1 -->
-                <div class="package-card">
-                    <h3 class="text-xl font-bold text-indigo-700 mb-2">Základný</h3>
-                    <p class="text-3xl font-extrabold text-purple-600 mb-2">€199<span class="text-base font-normal text-gray-500">/rok</span></p>
-                    <p class="text-sm text-gray-600 mb-4">Neobmedzené preklady slov, 10 jazykov.</p>
-                    <button class="btn-primary w-full purchase-modal-btn" data-package="Základný">Zakúpiť</button>
-                </div>
-                <!-- Modal Package 2 -->
-                <div class="package-card">
-                    <h3 class="text-xl font-bold text-indigo-700 mb-2">Štandardný</h3>
-                    <p class="text-3xl font-extrabold text-purple-600 mb-2">€349<span class="text-base font-normal text-gray-500">/rok</span></p>
-                    <p class="text-sm text-gray-600 mb-4">25 jazykov, prioritná podpora.</p>
-                    <button class="btn-primary w-full purchase-modal-btn" data-package="Štandardný">Zakúpiť</button>
-                </div>
-                <!-- Modal Package 3 (Recommended) -->
-                <div class="package-card recommended">
-                    <h3 class="text-xl font-bold mb-2">Profesionálny</h3>
-                    <p class="text-3xl font-extrabold mb-2">€599<span class="text-base font-normal text-gray-600">/rok</span></p>
-                    <p class="text-sm text-gray-700 mb-4">50+ jazykov, VIP podpora, história.</p>
-                    <button class="btn-primary w-full purchase-modal-btn" data-package="Profesionálny">Zakúpiť</button>
-                </div>
-                <!-- Modal Package 4 -->
-                <div class="package-card">
-                    <h3 class="text-xl font-bold text-indigo-700 mb-2">Firemný</h3>
-                    <p class="text-3xl font-extrabold text-purple-600 mb-2">€999<span class="text-base font-normal text-gray-500">/rok</span></p>
-                    <ul class="text-gray-600 text-left mb-6 space-y-2">
-                        <li>&#10003; Všetko z Profesionálneho</li>
-                        <li>&#10003; Prístup k všetkým jazykom</li>
-                        <li>&#10003; Viac užívateľských účtov</li>
-                        <li>&#10003; Osobný manažér účtu</li>
-                    </ul>
-                    <button class="btn-primary w-full purchase-modal-btn" data-package="Firemný">Zakúpiť</button>
-                </div>
-                <!-- Modal Package 5 -->
-                <div class="package-card">
-                    <h3 class="text-xl font-bold text-indigo-700 mb-2">Enterprise S</h3>
-                    <p class="text-3xl font-extrabold text-purple-600 mb-2">€1499<span class="text-base font-normal text-gray-500">/rok</span></p>
-                    <ul class="text-gray-600 text-left mb-6 space-y-2">
-                        <li>&#10003; Všetko z Firemného</li>
-                        <li>&#10003; Rozšírené API pre integráciu</li>
-                        <li>&#10003; Školenie tímu</li>
-                    </ul>
-                    <button class="btn-primary w-full purchase-modal-btn" data-package="Enterprise S">Zakúpiť</button>
-                </div>
-                <!-- Modal Package 6 -->
-                <div class="package-card">
-                    <h3 class="text-xl font-bold text-indigo-700 mb-2">Enterprise M</h3>
-                    <p class="text-3xl font-extrabold text-purple-600 mb-2">€1999<span class="text-base font-normal text-gray-500">/rok</span></p>
-                    <ul class="text-gray-600 text-left mb-6 space-y-2">
-                        <li>&#10003; Všetko z Enterprise S</li>
-                        <li>&#10003; Dedikovaný server</li>
-                        <li>&#10003; Pokročilé štatistiky</li>
-                    </ul>
-                    <button class="btn-primary w-full purchase-modal-btn" data-package="Enterprise M">Zakúpiť</button>
-                </div>
-                <!-- Modal Package 7 -->
-                <div class="package-card">
-                    <h3 class="text-xl font-bold text-indigo-700 mb-2">Enterprise L</h3>
-                    <p class="text-3xl font-extrabold text-purple-600 mb-2">€2499<span class="text-base font-normal text-gray-500">/rok</span></p>
-                    <ul class="text-gray-600 text-left mb-6 space-y-2">
-                        <li>&#10003; Všetko z Enterprise M</li>
-                        <li>&#10003; Prispôsobené riešenia</li>
-                        <li>&#10003; Non-stop technická podpora</li>
-                    </ul>
-                    <button class="btn-primary w-full purchase-modal-btn" data-package="Enterprise L">Zakúpiť</button>
-                </div>
-                <!-- Modal Package 8 -->
-                <div class="package-card">
-                    <h3 class="text-xl font-bold text-indigo-700 mb-2">Ultimate</h3>
-                    <p class="text-3xl font-extrabold text-purple-600 mb-2">€3999<span class="text-base font-normal text-gray-500">/rok</span></p>
-                    <ul class="text-gray-600 text-left mb-6 space-y-2">
-                        <li>&#10003; Všetko z Enterprise L</li>
-                        <li>&#10003; Exkluzívne beta funkcie</li>
-                        <li>&#10003; Prioritný prístup k novinkám</li>
-                    </ul>
-                    <button class="btn-primary w-full purchase-modal-btn" data-package="Ultimate">Zakúpiť</button>
-                </div>
-                <!-- Modal Package 9 -->
-                <div class="package-card">
-                    <h3 class="text-xl font-bold text-indigo-700 mb-2">Platinový</h3>
-                    <p class="text-3xl font-extrabold text-purple-600 mb-2">€5999<span class="text-base font-normal text-gray-500">/rok</span></p>
-                    <ul class="text-gray-600 text-left mb-6 space-y-2">
-                        <li>&#10003; Všetko z Ultimate</li>
-                        <li>&#10003; Osobné konzultácie s lingvistami</li>
-                        <li>&#10003; Vyhradený tím pre váš projekt</li>
-                    </ul>
-                    <button class="btn-primary w-full purchase-modal-btn" data-package="Platinový">Zakúpiť</button>
-                </div>
-                <!-- New Modal Package: Battle Pass Basic -->
-                <div class="package-card bg-blue-50 border-blue-500 border-2">
-                    <h3 class="text-xl font-bold text-blue-700 mb-2">Battle Pass Basic</h3>
-                    <p class="text-3xl font-extrabold text-blue-600 mb-2">Kód</p>
-                    <p class="text-sm text-gray-600 mb-4">Prístup k prekladaču slov, 1 rok, exkluzívny odznak.</p>
-                    <button class="btn-primary w-full purchase-modal-btn" data-package="Battle Pass Basic" data-purchase-type="battle-code">Aktivovať kódom</button>
-                </div>
-                <!-- New Modal Package: Battle Pass Premium -->
-                <div class="package-card bg-yellow-50 border-yellow-500 border-2">
-                    <h3 class="text-xl font-bold text-yellow-700 mb-2">Battle Pass Premium</h3>
-                    <p class="text-3xl font-extrabold text-yellow-600 mb-2">Kód</p>
-                    <p class="text-sm text-gray-600 mb-4">Všetko z Basic, 25 jazykov, prioritná podpora, zlatý odznak.</p>
-                    <button class="btn-primary w-full purchase-modal-btn" data-package="Battle Pass Premium" data-purchase-type="battle-code">Aktivovať kódom</button>
-                </div>
-            </div>
-            <!-- New Battle Code Activation Section -->
-            <div class="mt-8 pt-8 border-t border-gray-200">
-                <h3 class="text-2xl font-bold text-indigo-700 mb-4 text-center">Aktivovať pomocou Battle Kódu</h3>
-                <div class="flex flex-col md:flex-row items-center gap-4 max-w-md mx-auto">
-                    <input type="text" id="battleCodeInput" placeholder="Zadajte Battle Kód..."
-                           class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    <button id="activateBattleCodeBtn" class="btn-primary flex-shrink-0">Aktivovať kód</button>
-                </div>
-                <div id="battleCodeMessage" class="mt-4 text-center text-sm font-semibold hidden"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Firebase SDKs -->
     <script type="module">
-        console.log("Script start."); // Added for debugging
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        let app, db, auth, userId, appId;
-
-        const subscriptionStatusDiv = document.getElementById('subscriptionStatus');
-        const paymentSuccessMessageDiv = document.getElementById('paymentSuccessMessage');
-
-        // Define valid Battle Codes and their corresponding package names
-        const VALID_BATTLE_CODES = {
-            "BATTLEPASSBASIC123": "Battle Pass Basic",
-            "BATTLEPASSPREM456": "Battle Pass Premium",
-            // Add more valid codes as needed for testing
-        };
-
-        // Function to show a global success/error message
-        function showGlobalMessage(message, isSuccess) {
-            paymentSuccessMessageDiv.textContent = message;
-            paymentSuccessMessageDiv.classList.remove('hidden', 'payment-success-message', 'payment-error-message');
-            if (isSuccess) {
-                paymentSuccessMessageDiv.classList.add('payment-success-message', 'show');
-            } else {
-                paymentSuccessMessageDiv.classList.add('payment-error-message', 'show');
-            }
-            setTimeout(() => {
-                paymentSuccessMessageDiv.classList.remove('show');
-            }, isSuccess ? 3000 : 5000); // Hide after 3s for success, 5s for error
-        }
-
-        // Function to update the displayed expiration date
-        function updateExpirationDisplay(message) {
-            subscriptionStatusDiv.textContent = message;
-            subscriptionStatusDiv.classList.remove('hidden');
-        }
-
-        // Function to update translator visibility (now depends on Firestore state)
-        function updateTranslatorVisibility(paidStatus) {
-            const translatorContent = document.getElementById('translatorContent');
-            const paymentWall = document.getElementById('paymentWall');
-            console.log("updateTranslatorVisibility called with paidStatus:", paidStatus);
-
-            if (paidStatus) {
-                translatorContent.classList.remove('hidden');
-                paymentWall.classList.add('hidden');
-            } else {
-                translatorContent.classList.add('hidden');
-                paymentWall.classList.remove('hidden');
-            }
-        }
+        console.log("Script start.");
 
         // Function to speak text
         function speakText(text, lang) {
@@ -679,395 +284,107 @@
             }
         }
 
-        async function initializeFirebaseAndAuth() {
-            return new Promise(async (resolve, reject) => {
-                const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-                appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-
-                if (Object.keys(firebaseConfig).length === 0) {
-                    console.error("Firebase config not found. Please ensure __firebase_config is set.");
-                    reject("Firebase config missing.");
-                    return;
-                }
-
-                app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-                console.log("Firebase app, db, auth initialized.");
-
-                const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-                const unsubscribe = onAuthStateChanged(auth, async (user) => {
-                    if (user) {
-                        userId = user.uid;
-                        console.log("User ID:", userId);
-                        setupFirestoreListener(appId, userId);
-                        unsubscribe();
-                        resolve(userId);
-                    } else {
-                        if (!userId) {
-                            console.log("No user is signed in. Attempting anonymous sign-in.");
-                            try {
-                                if (initialAuthToken) {
-                                    await signInWithCustomToken(auth, initialAuthToken);
-                                    console.log("Signed in with custom token.");
-                                } else {
-                                    await signInAnonymously(auth);
-                                    console.log("Signed in anonymously.");
-                                }
-                            } catch (error) {
-                                console.error("Error during initial authentication:", error);
-                                updateExpirationDisplay('Chyba pri prihlásení.');
-                                updateTranslatorVisibility(false);
-                                unsubscribe();
-                                resolve(null);
-                            }
-                        }
-                    }
-                });
-            });
-        }
-
-        function setupFirestoreListener(appId, userId) {
-            if (!db) {
-                console.error("Firestore DB not initialized for listener setup.");
-                return;
-            }
-            const docRef = doc(db, `artifacts/${appId}/users/${userId}/translatorSubscription/status`);
-            console.log("Setting up Firestore listener for:", docRef.path);
-
-            onSnapshot(docRef, (docSnap) => {
-                const now = new Date();
-                let currentPaidStatus = false;
-                let expirationMessage = 'Nemáte aktívne predplatné.';
-
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    const expirationTimestamp = data.expirationDate;
-                    console.log("Firestore data received:", data);
-
-                    if (expirationTimestamp && expirationTimestamp.toDate) {
-                        const expirationDate = expirationTimestamp.toDate();
-                        if (expirationDate > now) {
-                            currentPaidStatus = true;
-                            expirationMessage = `Predplatné platí do: ${expirationDate.toLocaleDateString('sk-SK')}`;
-                        } else {
-                            currentPaidStatus = false;
-                            expirationMessage = 'Vaše predplatné vypršalo.';
-                        }
-                    } else {
-                        expirationMessage = 'Neplatné dátum vypršania v databáze.';
-                    }
-                } else {
-                    console.log("No subscription document found for userId:", userId);
-                }
-
-                updateTranslatorVisibility(currentPaidStatus);
-                updateExpirationDisplay(expirationMessage);
-
-            }, (error) => {
-                console.error("Error listening to Firestore document:", error);
-                updateTranslatorVisibility(false);
-                updateExpirationDisplay('Chyba pri načítaní predplatného.');
-            });
-        }
-
-        async function setPaymentStatusInFirestore(appId, userId, packageName) {
-            // Clear previous messages
-            paymentSuccessMessageDiv.classList.remove('show', 'payment-success-message', 'payment-error-message');
-            paymentSuccessMessageDiv.textContent = '';
-
-            if (!db || !userId) {
-                console.error("setPaymentStatusInFirestore: Firestore DB or User ID not initialized. db:", db, "userId:", userId);
-                showGlobalMessage(`Nastala chyba pri spracovaní nákupu. Skúste to prosím znova. ❌`, false);
-                return;
-            }
-            const docRef = doc(db, `artifacts/${appId}/users/${userId}/translatorSubscription/status`);
-            const now = new Date();
-            const expirationDate = new Date(now.getFullYear() + 1, 0, 1); // Set expiration to Jan 1st of next year
-
-            try {
-                console.log("setPaymentStatusInFirestore: Attempting setDoc for path:", docRef.path, "with data:", { isPaid: true, expirationDate: expirationDate, packageName: packageName, purchasedAt: now });
-                await setDoc(docRef, {
-                    isPaid: true,
-                    expirationDate: expirationDate,
-                    packageName: packageName,
-                    purchasedAt: now
-                });
-                console.log("Payment status updated in Firestore for userId:", userId, "packageName:", packageName);
-                showGlobalMessage(`Platba za balíček ${packageName} prebehla úspešne! ✅`, true);
-
-            } catch (e) {
-                console.error("Error adding document to Firestore: ", e);
-                showGlobalMessage(`Nastala chyba pri spracovaní nákupu. Skúste to prosím znova. ❌`, false);
-            }
-        }
-
         document.addEventListener('DOMContentLoaded', async () => {
-            console.log("DOM Content Loaded. Initializing Firebase and Auth...");
-            await initializeFirebaseAndAuth();
-            console.log("Firebase and Auth initialization complete. Current userId after init:", userId);
+            console.log("DOM Content Loaded. Setting up translator.");
 
             const wordInput = document.getElementById('wordInput');
             const languageSelect = document.getElementById('languageSelect');
             const translateButton = document.getElementById('translateButton');
             const translationResult = document.getElementById('translationResult');
             const loadingIndicator = document.getElementById('loadingIndicator');
-            const unlockTranslatorButton = document.getElementById('unlockTranslatorButton');
-            const paymentModal = document.getElementById('paymentModal');
-            const closeModalButton = document.getElementById('closeModal');
-            const purchasePackageButtons = document.querySelectorAll('.purchase-package-btn');
-            const purchaseModalButtons = document.querySelectorAll('.purchase-modal-btn');
             const speakTranslatedWordButton = document.getElementById('speakTranslatedWord');
-
-            // New elements for Battle Code
-            const battleCodeInput = document.getElementById('battleCodeInput');
-            const activateBattleCodeBtn = document.getElementById('activateBattleCodeBtn');
-            const battleCodeMessage = document.getElementById('battleCodeMessage');
 
             let lastTranslatedText = '';
             let lastTargetLanguage = '';
 
-            // Add a try-catch around the event listener attachments to catch any unexpected errors
-            try {
-                if (unlockTranslatorButton) {
-                    unlockTranslatorButton.addEventListener('click', () => {
-                        console.log("CLICK: Unlock Translator button clicked.");
-                        paymentModal.classList.add('show');
-                    });
-                } else {
-                    console.error("Element #unlockTranslatorButton not found!");
-                }
+            // Ensure translator content is always visible
+            const translatorContent = document.getElementById('translatorContent');
+            if (translatorContent) {
+                translatorContent.classList.remove('hidden');
+            }
 
-                if (closeModalButton) {
-                    closeModalButton.addEventListener('click', () => {
-                        console.log("CLICK: Close modal button clicked.");
-                        paymentModal.classList.remove('show');
-                        // Clear any battle code messages when closing modal
-                        battleCodeMessage.classList.add('hidden');
-                        battleCodeMessage.textContent = '';
-                        if (battleCodeInput) battleCodeInput.value = '';
-                    });
-                } else {
-                    console.error("Element #closeModal not found!");
-                }
-
-                if (paymentModal) {
-                    paymentModal.addEventListener('click', (e) => {
-                        if (e.target === paymentModal) {
-                            console.log("CLICK: Clicked outside modal, closing.");
-                            paymentModal.classList.remove('show');
-                            // Clear any battle code messages when closing modal
-                            battleCodeMessage.classList.add('hidden');
-                            battleCodeMessage.textContent = '';
-                            if (battleCodeInput) battleCodeInput.value = '';
-                        }
-                    });
-                } else {
-                    console.error("Element #paymentModal not found!");
-                }
-
-                // Event listeners for regular purchase buttons (both main section and modal)
-                purchasePackageButtons.forEach(button => {
-                    button.addEventListener('click', async (e) => {
-                        const packageName = e.target.dataset.package;
-                        const purchaseType = e.target.dataset.purchaseType; // Check for battle-code type
-                        console.log("CLICK: Purchase button clicked for package:", packageName, "Type:", purchaseType, "Current userId:", userId);
-
-                        if (purchaseType === 'battle-code') {
-                            // For Battle Pass buttons, just open the modal and prompt for code
-                            paymentModal.classList.add('show');
-                            // Optionally, pre-fill the battle code input or show specific instructions
-                            battleCodeMessage.textContent = `Zadajte Battle Kód pre aktiváciu balíčka "${packageName}".`;
-                            battleCodeMessage.classList.remove('hidden', 'text-green-800', 'text-red-800');
-                            battleCodeMessage.classList.add('text-gray-700');
-                            if (battleCodeInput) battleCodeInput.focus();
-                            return; // Stop here, don't process as direct purchase
-                        }
-
-                        // Process as regular purchase
-                        if (userId) {
-                            console.log("Attempting to set payment status in Firestore for:", userId, "package:", packageName);
-                            await setPaymentStatusInFirestore(appId, userId, packageName);
-                            // If the button is in the modal, close the modal after purchase
-                            if (e.target.classList.contains('purchase-modal-btn')) {
-                                paymentModal.classList.remove('show');
-                            }
-                        } else {
-                            console.error("User ID is not available for purchase. Firebase auth might have failed.");
-                            showGlobalMessage(`Nastala chyba pri spracovaní nákupu (ID používateľa nie je k dispozícii). ❌`, false);
-                        }
-                    });
+            if (speakTranslatedWordButton) {
+                speakTranslatedWordButton.addEventListener('click', () => {
+                    console.log("CLICK: Speak translated word button clicked.");
+                    if (lastTranslatedText && lastTargetLanguage) {
+                        speakText(lastTranslatedText, lastTargetLanguage);
+                    }
                 });
+            } else {
+                console.error("Element #speakTranslatedWord not found!");
+            }
 
-                purchaseModalButtons.forEach(button => {
-                    button.addEventListener('click', async (e) => {
-                        const packageName = e.target.dataset.package;
-                        const purchaseType = e.target.dataset.purchaseType; // Check for battle-code type
-                        console.log("CLICK: Modal purchase button clicked for package:", packageName, "Type:", purchaseType, "Current userId:", userId);
+            if (translateButton) {
+                translateButton.addEventListener('click', async () => {
+                    console.log("CLICK: Translate button clicked.");
 
-                        if (purchaseType === 'battle-code') {
-                            // For Battle Pass buttons inside modal, just prompt for code
-                            battleCodeMessage.textContent = `Zadajte Battle Kód pre aktiváciu balíčka "${packageName}".`;
-                            battleCodeMessage.classList.remove('hidden', 'text-green-800', 'text-red-800');
-                            battleCodeMessage.classList.add('text-gray-700');
-                            if (battleCodeInput) battleCodeInput.focus();
-                            return; // Stop here, don't process as direct purchase
-                        }
+                    const word = wordInput.value.trim();
+                    const targetLanguage = languageSelect.value;
+                    const targetLanguageName = languageSelect.options[languageSelect.selectedIndex].text;
 
-                        // Process as regular purchase
-                        if (userId) {
-                            console.log("Attempting to set payment status in Firestore from modal for:", userId, "package:", packageName);
-                            await setPaymentStatusInFirestore(appId, userId, packageName);
-                            paymentModal.classList.remove('show'); // Close modal after "purchase"
-                        } else {
-                            console.error("User ID is not available for purchase from modal. Firebase auth might have failed.");
-                            showGlobalMessage(`Nastala chyba pri spracovaní nákupu (ID používateľa nie je k dispozícii). ❌`, false);
-                        }
-                    });
-                });
-
-                // Event listener for Battle Code activation button
-                if (activateBattleCodeBtn) {
-                    activateBattleCodeBtn.addEventListener('click', async () => {
-                        console.log("CLICK: Activate Battle Code button clicked.");
-                        const code = battleCodeInput.value.trim().toUpperCase();
-                        battleCodeMessage.classList.add('hidden'); // Hide previous message
-
-                        if (!code) {
-                            battleCodeMessage.textContent = "Prosím, zadajte Battle Kód.";
-                            battleCodeMessage.classList.remove('hidden');
-                            battleCodeMessage.classList.add('text-red-800');
-                            return;
-                        }
-
-                        const packageName = VALID_BATTLE_CODES[code];
-                        if (packageName && userId) {
-                            console.log(`Battle Code "${code}" is valid for package: ${packageName}. Current userId: ${userId}`);
-                            await setPaymentStatusInFirestore(appId, userId, packageName);
-                            battleCodeMessage.textContent = `Battle Kód aktivovaný pre balíček "${packageName}"! ✅`;
-                            battleCodeMessage.classList.remove('text-red-800');
-                            battleCodeMessage.classList.add('text-green-800', 'show');
-                            setTimeout(() => {
-                                battleCodeMessage.classList.remove('show');
-                                paymentModal.classList.remove('show'); // Close modal on successful activation
-                                battleCodeInput.value = ''; // Clear input
-                            }, 3000);
-                        } else {
-                            console.warn(`Invalid Battle Code entered: "${code}" or userId not available.`);
-                            battleCodeMessage.textContent = "Neplatný Battle Kód. Skúste to prosím znova. ❌";
-                            battleCodeMessage.classList.remove('hidden');
-                            battleCodeMessage.classList.add('text-red-800', 'show');
-                            setTimeout(() => {
-                                battleCodeMessage.classList.remove('show');
-                            }, 5000);
-                        }
-                    });
-                } else {
-                    console.error("Element #activateBattleCodeBtn not found!");
-                }
-
-
-                if (speakTranslatedWordButton) {
-                    speakTranslatedWordButton.addEventListener('click', () => {
-                        console.log("CLICK: Speak translated word button clicked.");
-                        if (lastTranslatedText && lastTargetLanguage) {
-                            speakText(lastTranslatedText, lastTargetLanguage);
-                        }
-                    });
-                } else {
-                    console.error("Element #speakTranslatedWord not found!");
-                }
-
-                if (translateButton) {
-                    translateButton.addEventListener('click', async () => {
-                        console.log("CLICK: Translate button clicked.");
-                        const currentSubscriptionStatus = subscriptionStatusDiv.textContent;
-                        const isCurrentlyPaid = currentSubscriptionStatus.includes('Platí do:');
-
-                        if (!isCurrentlyPaid) {
-                            console.log("Translator locked, showing payment wall.");
-                            translationResult.innerHTML = 'Preklad je dostupný len pre predplatiteľov. Prosím, zakúpte si balíček.';
-                            translationResult.classList.remove('text-indigo-700');
-                            translationResult.classList.add('text-red-600');
-                            speakTranslatedWordButton.classList.add('hidden');
-                            paymentModal.classList.add('show');
-                            return;
-                        }
-
-                        const word = wordInput.value.trim();
-                        const targetLanguage = languageSelect.value;
-                        const targetLanguageName = languageSelect.options[languageSelect.selectedIndex].text;
-
-                        if (!word) {
-                            console.log("No word entered for translation.");
-                            translationResult.innerHTML = 'Prosím, zadajte slovo na preklad.';
-                            translationResult.classList.remove('text-indigo-700');
-                            translationResult.classList.add('text-red-600');
-                            speakTranslatedWordButton.classList.add('hidden');
-                            return;
-                        }
-
-                        translationResult.innerHTML = '';
-                        loadingIndicator.classList.remove('hidden');
-                        translationResult.classList.remove('text-red-600');
-                        translationResult.classList.add('text-indigo-700');
+                    if (!word) {
+                        console.log("No word entered for translation.");
+                        translationResult.innerHTML = 'Prosím, zadajte slovo na preklad.';
+                        translationResult.classList.remove('text-indigo-700');
+                        translationResult.classList.add('text-red-600');
                         speakTranslatedWordButton.classList.add('hidden');
-                        console.log(`Translating "${word}" to ${targetLanguageName}...`);
+                        return;
+                    }
 
-                        try {
-                            const prompt = `Preložte slovo "${word}" do ${targetLanguageName} (${targetLanguage}). Poskytnite iba preložené slovo, bez ďalšieho textu alebo vysvetlení.`;
-                            let chatHistory = [];
-                            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                    translationResult.innerHTML = '';
+                    loadingIndicator.classList.remove('hidden');
+                    translationResult.classList.remove('text-red-600');
+                    translationResult.classList.add('text-indigo-700');
+                    speakTranslatedWordButton.classList.add('hidden');
+                    console.log(`Translating "${word}" to ${targetLanguageName}...`);
 
-                            const payload = { contents: chatHistory };
-                            const apiKey = "AIzaSyA7UeU1kIC_0VF5HNCeEhrBkPFoeoIiC4o"; // API key is provided by Canvas runtime
-                            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    try {
+                        const prompt = `Preložte slovo "${word}" do ${targetLanguageName} (${targetLanguage}). Poskytnite iba preložené slovo, bez ďalšieho textu alebo vysvetlení.`;
+                        let chatHistory = [];
+                        chatHistory.push({ role: "user", parts: [{ text: prompt }] });
 
-                            const response = await fetch(apiUrl, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify(payload)
-                            });
+                        const payload = { contents: chatHistory };
+                        const apiKey = "AIzaSyA7UeU1kIC_0VF5HNCeEhrBkPFoeoIiC4o"; // API key is provided by Canvas runtime
+                        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
-                            const result = await response.json();
-                            console.log("Gemini API response:", result);
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
 
-                            if (result.candidates && result.candidates.length > 0 &&
-                                result.candidates[0].content && result.candidates[0].content.parts &&
-                                result.candidates[0].content.parts.length > 0) {
-                                const translatedText = result.candidates[0].content.parts[0].text.trim();
-                                lastTranslatedText = translatedText;
-                                lastTargetLanguage = targetLanguage;
+                        const result = await response.json();
+                        console.log("Gemini API response:", result);
 
-                                translationResult.innerHTML = `Preklad: "${translatedText}"`;
-                                speakTranslatedWordButton.classList.remove('hidden');
-                                speakText(translatedText, targetLanguage);
-                            } else {
-                                console.warn("Unexpected Gemini API response structure or no translation found.");
-                                translationResult.innerHTML = 'Preklad sa nepodarilo získať.';
-                                translationResult.classList.remove('text-indigo-700');
-                                translationResult.classList.add('text-red-600');
-                                speakTranslatedWordButton.classList.add('hidden');
-                            }
-                        } catch (error) {
-                            console.error('Chyba pri preklade:', error);
-                            translationResult.innerHTML = 'Nastala chyba pri preklade. Skúste to prosím znova.';
+                        if (result.candidates && result.candidates.length > 0 &&
+                            result.candidates[0].content && result.candidates[0].content.parts &&
+                            result.candidates[0].content.parts.length > 0) {
+                            const translatedText = result.candidates[0].content.parts[0].text.trim();
+                            lastTranslatedText = translatedText;
+                            lastTargetLanguage = targetLanguage;
+
+                            translationResult.innerHTML = `Preklad: "${translatedText}"`;
+                            speakTranslatedWordButton.classList.remove('hidden');
+                            speakText(translatedText, targetLanguage);
+                        } else {
+                            console.warn("Unexpected Gemini API response structure or no translation found.");
+                            translationResult.innerHTML = 'Preklad sa nepodarilo získať.';
                             translationResult.classList.remove('text-indigo-700');
                             translationResult.classList.add('text-red-600');
                             speakTranslatedWordButton.classList.add('hidden');
-                        } finally {
-                            loadingIndicator.classList.add('hidden');
                         }
-                    });
-                } else {
-                    console.error("Element #translateButton not found!");
-                }
-
-            } catch (e) {
-                console.error("Error attaching event listeners:", e);
-                // Display a general error message if something went wrong during setup
-                showGlobalMessage(`Nastala kritická chyba pri inicializácii aplikácie. Skúste obnoviť stránku. ❌`, false);
+                    } catch (error) {
+                        console.error('Chyba pri preklade:', error);
+                        translationResult.innerHTML = 'Nastala chyba pri preklade. Skúste to prosím znova.';
+                        translationResult.classList.remove('text-indigo-700');
+                        translationResult.classList.add('text-red-600');
+                        speakTranslatedWordButton.classList.add('hidden');
+                    } finally {
+                        loadingIndicator.classList.add('hidden');
+                    }
+                });
+            } else {
+                console.error("Element #translateButton not found!");
             }
         });
     </script>
