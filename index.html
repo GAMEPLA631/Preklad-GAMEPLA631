@@ -7,7 +7,7 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts - Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -326,7 +326,7 @@
                 </div>
                 <!-- Package 3 (Recommended) -->
                 <div class="package-card recommended">
-                    <h3 class="text-2xl font-bold mb-2">Profesionálny</h3>
+                    <h3 class="2xl font-bold mb-2">Profesionálny</h3>
                     <p class="text-4xl font-extrabold mb-4">€599<span class="text-xl font-normal text-gray-600">/rok</span></p>
                     <ul class="text-gray-700 text-left mb-6 space-y-2">
                         <li>&#10003; Všetko zo Štandardného</li>
@@ -773,8 +773,12 @@
         }
 
         async function setPaymentStatusInFirestore(appId, userId, packageName) {
+            // Clear previous messages
+            paymentSuccessMessageDiv.classList.remove('show', 'payment-success-message', 'payment-error-message');
+            paymentSuccessMessageDiv.textContent = '';
+
             if (!db || !userId) {
-                console.error("Firestore DB or User ID not initialized for setPaymentStatusInFirestore. db:", db, "userId:", userId);
+                console.error("setPaymentStatusInFirestore: Firestore DB or User ID not initialized. db:", db, "userId:", userId);
                 showGlobalMessage(`Nastala chyba pri spracovaní nákupu. Skúste to prosím znova. ❌`, false);
                 return;
             }
@@ -783,6 +787,7 @@
             const expirationDate = new Date(now.getFullYear() + 1, 0, 1); // Set expiration to Jan 1st of next year
 
             try {
+                console.log("setPaymentStatusInFirestore: Attempting setDoc for path:", docRef.path, "with data:", { isPaid: true, expirationDate: expirationDate, packageName: packageName, purchasedAt: now });
                 await setDoc(docRef, {
                     isPaid: true,
                     expirationDate: expirationDate,
@@ -801,7 +806,7 @@
         document.addEventListener('DOMContentLoaded', async () => {
             console.log("DOM Content Loaded. Initializing Firebase and Auth...");
             await initializeFirebaseAndAuth();
-            console.log("Firebase and Auth initialization complete. User ID:", userId);
+            console.log("Firebase and Auth initialization complete. Current userId after init:", userId);
 
             const wordInput = document.getElementById('wordInput');
             const languageSelect = document.getElementById('languageSelect');
@@ -867,7 +872,7 @@
                     button.addEventListener('click', async (e) => {
                         const packageName = e.target.dataset.package;
                         const purchaseType = e.target.dataset.purchaseType; // Check for battle-code type
-                        console.log("CLICK: Purchase button clicked for package:", packageName, "Type:", purchaseType);
+                        console.log("CLICK: Purchase button clicked for package:", packageName, "Type:", purchaseType, "Current userId:", userId);
 
                         if (purchaseType === 'battle-code') {
                             // For Battle Pass buttons, just open the modal and prompt for code
@@ -882,7 +887,12 @@
 
                         // Process as regular purchase
                         if (userId) {
+                            console.log("Attempting to set payment status in Firestore for:", userId, "package:", packageName);
                             await setPaymentStatusInFirestore(appId, userId, packageName);
+                            // If the button is in the modal, close the modal after purchase
+                            if (e.target.classList.contains('purchase-modal-btn')) {
+                                paymentModal.classList.remove('show');
+                            }
                         } else {
                             console.error("User ID is not available for purchase. Firebase auth might have failed.");
                             showGlobalMessage(`Nastala chyba pri spracovaní nákupu (ID používateľa nie je k dispozícii). ❌`, false);
@@ -894,7 +904,7 @@
                     button.addEventListener('click', async (e) => {
                         const packageName = e.target.dataset.package;
                         const purchaseType = e.target.dataset.purchaseType; // Check for battle-code type
-                        console.log("CLICK: Modal purchase button clicked for package:", packageName, "Type:", purchaseType);
+                        console.log("CLICK: Modal purchase button clicked for package:", packageName, "Type:", purchaseType, "Current userId:", userId);
 
                         if (purchaseType === 'battle-code') {
                             // For Battle Pass buttons inside modal, just prompt for code
@@ -907,6 +917,7 @@
 
                         // Process as regular purchase
                         if (userId) {
+                            console.log("Attempting to set payment status in Firestore from modal for:", userId, "package:", packageName);
                             await setPaymentStatusInFirestore(appId, userId, packageName);
                             paymentModal.classList.remove('show'); // Close modal after "purchase"
                         } else {
@@ -932,7 +943,7 @@
 
                         const packageName = VALID_BATTLE_CODES[code];
                         if (packageName && userId) {
-                            console.log(`Battle Code "${code}" is valid for package: ${packageName}`);
+                            console.log(`Battle Code "${code}" is valid for package: ${packageName}. Current userId: ${userId}`);
                             await setPaymentStatusInFirestore(appId, userId, packageName);
                             battleCodeMessage.textContent = `Battle Kód aktivovaný pre balíček "${packageName}"! ✅`;
                             battleCodeMessage.classList.remove('text-red-800');
@@ -1062,3 +1073,4 @@
     </script>
 </body>
 </html>
+
