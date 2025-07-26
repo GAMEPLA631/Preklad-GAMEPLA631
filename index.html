@@ -53,6 +53,52 @@
             height: 24px;
             fill: #4c51bf; /* Indigo 600 */
         }
+
+        /* Modal specific styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            text-align: left; /* Align text within modal content */
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -215,17 +261,12 @@
                         <p class="text-5xl font-extrabold text-purple-700 mb-6">9,99 € <span class="text-2xl text-gray-500">/ rok</span></p>
                         <ul class="text-lg text-left mx-auto mb-8 space-y-3">
                             <li class="flex items-center"><svg class="w-6 h-6 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> Neobmedzený počet prekladov</li>
-                            <li class="flex items-center"><svg class="w-6 h-6 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg Prioritná technická podpora</li>
-                            <li class="flex items-center"><svg class="w-6 h-6 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg Prístup k budúcim prémiovým funkciám</li>
+                            <li class="flex items-center"><svg class="w-6 h-6 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> Prioritná technická podpora</li>
+                            <li class="flex items-center"><svg class="w-6 h-6 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> Prístup k budúcim prémiovým funkciám</li>
                             <li class="flex items-center"><svg class="w-6 h-6 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> Bez reklám</li>
                         </ul>
                     </div>
-                    <form action="/process_payment" method="POST">
-                        <input type="hidden" name="plan_type" value="standard_premium">
-                        <input type="hidden" name="amount" value="9.99">
-                        <input type="hidden" name="currency" value="EUR">
-                        <button type="submit" class="btn-primary w-full">Predplatiť ročne za 9,99 €</button>
-                    </form>
+                    <button type="button" class="btn-primary w-full open-payment-modal" data-plan-name="Štandardné ročné predplatné" data-amount="9.99">Predplatiť ročne za 9,99 €</button>
                 </div>
 
                 <div class="card max-w-sm w-full bg-white text-gray-800 p-8 flex flex-col justify-between transform hover:scale-105 transition duration-300 border-2 border-purple-500 shadow-xl animate-fade-in-up delay-300">
@@ -239,12 +280,7 @@
                             <li class="flex items-center"><svg class="w-6 h-6 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> Nadštandardná podpora 24/7</li>
                         </ul>
                     </div>
-                    <form action="/process_payment" method="POST">
-                        <input type="hidden" name="plan_type" value="vip_elite_premium">
-                        <input type="hidden" name="amount" value="500.99">
-                        <input type="hidden" name="currency" value="EUR">
-                        <button type="submit" class="btn-primary w-full !bg-gradient-to-r !from-red-600 !to-purple-700 hover:!from-red-700 hover:!to-purple-800">Predplatiť ročne za 500,99 €</button>
-                    </form>
+                    <button type="button" class="btn-primary w-full !bg-gradient-to-r !from-red-600 !to-purple-700 hover:!from-red-700 hover:!to-purple-800 open-payment-modal" data-plan-name="VIP Elitné ročné predplatné" data-amount="500.99">Predplatiť ročne za 500,99 €</button>
                 </div>
             </div>
         </div>
@@ -305,6 +341,37 @@
         </div>
     </footer>
 
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closePaymentModal">&times;</span>
+            <h2 class="text-3xl font-bold text-indigo-700 mb-6 text-center">Dokončenie platby</h2>
+            <p id="modalPlanInfo" class="text-lg text-gray-700 mb-6 text-center"></p>
+
+            <form id="paymentForm" class="space-y-6">
+                <div>
+                    <label for="cardNumber" class="block text-left text-gray-700 text-sm font-bold mb-2">Číslo karty:</label>
+                    <input type="text" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required pattern="[0-9]{13,16}" title="Prosím, zadajte platné číslo karty (13-16 číslic)">
+                </div>
+                <div>
+                    <label for="cardName" class="block text-left text-gray-700 text-sm font-bold mb-2">Meno držiteľa karty:</label>
+                    <input type="text" id="cardName" placeholder="Meno na karte" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                </div>
+                <div class="flex space-x-4">
+                    <div class="w-1/2">
+                        <label for="expiryDate" class="block text-left text-gray-700 text-sm font-bold mb-2">Dátum exspirácie (MM/RR):</label>
+                        <input type="text" id="expiryDate" placeholder="MM/RR" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required pattern="(0[1-9]|1[0-2])\/([0-9]{2})" title="Formát MM/RR">
+                    </div>
+                    <div class="w-1/2">
+                        <label for="cvv" class="block text-left text-gray-700 text-sm font-bold mb-2">CVV:</label>
+                        <input type="text" id="cvv" placeholder="XXX" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required pattern="[0-9]{3,4}" title="3 alebo 4 číslice">
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary w-full py-3">Zaplatiť</button>
+            </form>
+            <div id="paymentStatus" class="mt-6 text-center text-xl font-semibold hidden"></div>
+        </div>
+    </div>
+
     <script type="module">
         console.log("Script start.");
 
@@ -320,20 +387,21 @@
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
-            console.log("DOM Content Loaded. Setting up translator.");
+            console.log("DOM Content Loaded. Setting up translator and payment modal.");
 
+            // --- Translator Logic ---
             const wordInput = document.getElementById('wordInput');
             const languageSelect = document.getElementById('languageSelect');
             const translateButton = document.getElementById('translateButton');
             const translationResult = document.getElementById('translationResult');
             const loadingIndicator = document.getElementById('loadingIndicator');
             const speakTranslatedWordButton = document.getElementById('speakTranslatedWord');
-            const translatorContent = document.getElementById('translatorContent'); // Ensure this is available
+            const translatorContent = document.getElementById('translatorContent');
 
             let lastTranslatedText = '';
             let lastTargetLanguage = '';
-            let translationCount = 0; // Initialize translation counter
-            const FREE_TRANSLATION_LIMIT = 5; // Set the free limit
+            let translationCount = 0;
+            const FREE_TRANSLATION_LIMIT = 5;
 
             if (translatorContent) {
                 translatorContent.classList.remove('hidden');
@@ -346,23 +414,20 @@
                         speakText(lastTranslatedText, lastTargetLanguage);
                     }
                 });
-            } else {
-                console.error("Element #speakTranslatedWord not found!");
             }
 
             if (translateButton) {
                 translateButton.addEventListener('click', async () => {
                     console.log("CLICK: Translate button clicked.");
 
-                    // Check if the user has exceeded the free translation limit
                     if (translationCount >= FREE_TRANSLATION_LIMIT) {
                         translationResult.innerHTML = `Dosiahli ste limit ${FREE_TRANSLATION_LIMIT} bezplatných prekladov. Pre neobmedzené preklady si prosím <a href="#paid-translator" class="text-purple-600 font-semibold hover:underline">zakúpte prémiovú verziu</a>.`;
                         translationResult.classList.remove('text-indigo-700');
                         translationResult.classList.add('text-red-600');
                         speakTranslatedWordButton.classList.add('hidden');
-                        wordInput.disabled = true; // Disable input
-                        languageSelect.disabled = true; // Disable select
-                        translateButton.disabled = true; // Disable button
+                        wordInput.disabled = true;
+                        languageSelect.disabled = true;
+                        translateButton.disabled = true;
                         return;
                     }
 
@@ -414,7 +479,7 @@
                             translationResult.innerHTML = `Preklad: "${translatedText}"`;
                             speakTranslatedWordButton.classList.remove('hidden');
                             speakText(translatedText, targetLanguage);
-                            translationCount++; // Increment count on successful translation
+                            translationCount++;
                             console.log(`Translations remaining: ${FREE_TRANSLATION_LIMIT - translationCount}`);
 
                         } else {
@@ -434,9 +499,78 @@
                         loadingIndicator.classList.add('hidden');
                     }
                 });
-            } else {
-                console.error("Element #translateButton not found!");
             }
+
+            // --- Payment Modal Logic ---
+            const paymentModal = document.getElementById('paymentModal');
+            const closePaymentModal = document.getElementById('closePaymentModal');
+            const openPaymentButtons = document.querySelectorAll('.open-payment-modal');
+            const modalPlanInfo = document.getElementById('modalPlanInfo');
+            const paymentForm = document.getElementById('paymentForm');
+            const paymentStatus = document.getElementById('paymentStatus');
+
+            let selectedPlanName = '';
+            let selectedAmount = '';
+
+            openPaymentButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    selectedPlanName = event.target.dataset.planName;
+                    selectedAmount = event.target.dataset.amount;
+
+                    modalPlanInfo.textContent = `Vybrali ste si: ${selectedPlanName} za ${selectedAmount} € ročne.`;
+                    paymentModal.style.display = 'flex'; // Show the modal
+                    paymentStatus.classList.add('hidden'); // Hide status message on new open
+                    paymentForm.reset(); // Clear previous form data
+                });
+            });
+
+            closePaymentModal.addEventListener('click', () => {
+                paymentModal.style.display = 'none'; // Hide the modal
+            });
+
+            // Close modal when clicking outside of the content
+            window.addEventListener('click', (event) => {
+                if (event.target == paymentModal) {
+                    paymentModal.style.display = 'none';
+                }
+            });
+
+            paymentForm.addEventListener('submit', (event) => {
+                event.preventDefault(); // Prevent default form submission
+
+                const cardNumber = document.getElementById('cardNumber').value;
+                const cardName = document.getElementById('cardName').value;
+                const expiryDate = document.getElementById('expiryDate').value;
+                const cvv = document.getElementById('cvv').value;
+
+                console.log("Simulovaná platba:");
+                console.log("Plán:", selectedPlanName);
+                console.log("Suma:", selectedAmount, "€");
+                console.log("Číslo karty:", cardNumber);
+                console.log("Meno držiteľa:", cardName);
+                console.log("Exspirácia:", expiryDate);
+                console.log("CVV:", cvv);
+
+                paymentStatus.classList.remove('hidden');
+                paymentStatus.classList.remove('text-red-600', 'text-green-600'); // Reset colors
+
+                // Simple client-side validation for demonstration
+                const isValidCardNumber = /^[0-9]{13,16}$/.test(cardNumber);
+                const isValidExpiryDate = /^(0[1-9]|1[0-2])\/([0-9]{2})$/.test(expiryDate);
+                const isValidCvv = /^[0-9]{3,4}$/.test(cvv);
+                const isValidCardName = cardName.trim().length > 0;
+
+                if (isValidCardNumber && isValidCardName && isValidExpiryDate && isValidCvv) {
+                    paymentStatus.textContent = 'Platba bola úspešná! Ďakujeme za váš nákup.';
+                    paymentStatus.classList.add('text-green-600');
+                    paymentForm.reset(); // Clear the form
+                    // In a real scenario, you'd send this data to your backend here
+                    // and then potentially close the modal or redirect upon successful backend processing.
+                } else {
+                    paymentStatus.textContent = 'Chyba platby: Prosím, skontrolujte zadané údaje.';
+                    paymentStatus.classList.add('text-red-600');
+                }
+            });
         });
     </script>
 </body>
