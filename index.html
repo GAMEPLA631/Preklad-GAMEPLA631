@@ -105,11 +105,22 @@
         }
         /* Style for the payment success message */
         .payment-success-message {
-            @apply bg-green-100 text-green-800 p-3 rounded-lg mt-4 text-center font-semibold;
+            @apply fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-green-100 text-green-800 p-3 rounded-lg text-center font-semibold shadow-lg;
             opacity: 0;
             transition: opacity 0.5s ease-out;
+            min-width: 250px; /* Ensure it's wide enough */
         }
         .payment-success-message.show {
+            opacity: 1;
+        }
+        /* Style for the payment error message */
+        .payment-error-message {
+            @apply fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-red-100 text-red-800 p-3 rounded-lg text-center font-semibold shadow-lg;
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+            min-width: 250px; /* Ensure it's wide enough */
+        }
+        .payment-error-message.show {
             opacity: 1;
         }
     </style>
@@ -550,12 +561,11 @@
                     <button class="btn-primary w-full purchase-modal-btn" data-package="Platinový">Zakúpiť</button>
                 </div>
             </div>
-            <!-- Payment Success Message -->
-            <div id="paymentSuccessMessage" class="payment-success-message hidden">
-                Platba prebehla úspešne! ✅
-            </div>
         </div>
     </div>
+
+    <!-- Global Payment Success/Error Message -->
+    <div id="paymentSuccessMessage" class="payment-success-message hidden"></div>
 
     <!-- Firebase SDKs -->
     <script type="module">
@@ -563,10 +573,10 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        let app, db, auth, userId, appId; // appId added here
+        let app, db, auth, userId, appId;
 
         const subscriptionStatusDiv = document.getElementById('subscriptionStatus');
-        const paymentSuccessMessageDiv = document.getElementById('paymentSuccessMessage'); // Get the new success message div
+        const paymentSuccessMessageDiv = document.getElementById('paymentSuccessMessage');
 
         // Function to update the displayed expiration date
         function updateExpirationDisplay(message) {
@@ -578,6 +588,7 @@
         function updateTranslatorVisibility(paidStatus) {
             const translatorContent = document.getElementById('translatorContent');
             const paymentWall = document.getElementById('paymentWall');
+            console.log("updateTranslatorVisibility called with paidStatus:", paidStatus);
 
             if (paidStatus) {
                 translatorContent.classList.remove('hidden');
@@ -591,7 +602,7 @@
         async function initializeFirebaseAndAuth() {
             return new Promise(async (resolve, reject) => {
                 const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-                appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id'; // Set global appId here
+                appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 
                 if (Object.keys(firebaseConfig).length === 0) {
                     console.error("Firebase config not found. Please ensure __firebase_config is set.");
@@ -605,19 +616,15 @@
 
                 const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
-                // Use onAuthStateChanged to reliably get the user ID
-                // This listener will fire immediately with the current auth state,
-                // and again if the state changes (e.g., after signInAnonymously).
                 const unsubscribe = onAuthStateChanged(auth, async (user) => {
                     if (user) {
                         userId = user.uid;
                         console.log("User ID:", userId);
                         setupFirestoreListener(appId, userId);
-                        unsubscribe(); // Unsubscribe after we get a user
-                        resolve(userId); // Resolve the promise with the userId
+                        unsubscribe();
+                        resolve(userId);
                     } else {
-                        // If no user initially, try to sign in anonymously
-                        if (!userId) { // Only attempt sign-in if userId is not already set from a previous state change
+                        if (!userId) {
                             console.log("No user is signed in. Attempting anonymous sign-in.");
                             try {
                                 if (initialAuthToken) {
@@ -625,14 +632,12 @@
                                 } else {
                                     await signInAnonymously(auth);
                                 }
-                                // The onAuthStateChanged listener will fire again with the new user object,
-                                // and the `if (user)` block above will handle it.
                             } catch (error) {
                                 console.error("Error during initial authentication:", error);
                                 updateExpirationDisplay('Chyba pri prihlásení.');
                                 updateTranslatorVisibility(false);
-                                unsubscribe(); // Unsubscribe on error
-                                resolve(null); // Resolve with null on error
+                                unsubscribe();
+                                resolve(null);
                             }
                         }
                     }
@@ -641,7 +646,6 @@
         }
 
         function setupFirestoreListener(appId, userId) {
-            // Ensure db is initialized before trying to use it
             if (!db) {
                 console.error("Firestore DB not initialized.");
                 return;
@@ -657,7 +661,7 @@
                     const data = docSnap.data();
                     const expirationTimestamp = data.expirationDate;
 
-                    if (expirationTimestamp && expirationTimestamp.toDate) { // Check if it's a Firestore Timestamp
+                    if (expirationTimestamp && expirationTimestamp.toDate) {
                         const expirationDate = expirationTimestamp.toDate();
                         if (expirationDate > now) {
                             currentPaidStatus = true;
@@ -682,49 +686,46 @@
         }
 
         async function setPaymentStatusInFirestore(appId, userId, packageName) {
-            // Ensure db is initialized and userId is available
             if (!db || !userId) {
                 console.error("Firestore DB or User ID not initialized for setPaymentStatusInFirestore.");
-                // Changed alert message as requested
-                // alert("Nastala chyba pri spracovaní nákupu. Skúste to prosím znova."); // This alert is now replaced by the success message div
+                paymentSuccessMessageDiv.textContent = `Nastala chyba pri spracovaní nákupu. Skúste to prosím znova. ❌`;
+                paymentSuccessMessageDiv.classList.add('payment-error-message', 'show');
+                setTimeout(() => {
+                    paymentSuccessMessageDiv.classList.remove('payment-error-message', 'show');
+                }, 5000);
                 return;
             }
             const docRef = doc(db, `artifacts/${appId}/users/${userId}/translatorSubscription/status`);
             const now = new Date();
-            // Calculate expiration for January 1st of the next year
             const expirationDate = new Date(now.getFullYear() + 1, 0, 1);
 
             try {
                 await setDoc(docRef, {
                     isPaid: true,
-                    expirationDate: expirationDate, // Firestore will convert Date objects to Timestamps
+                    expirationDate: expirationDate,
                     packageName: packageName,
                     purchasedAt: now
                 });
-                console.log("Payment status updated in Firestore.");
-                // Show success message
+                console.log("Payment status updated in Firestore for userId:", userId, "packageName:", packageName);
                 paymentSuccessMessageDiv.textContent = `Platba za balíček ${packageName} prebehla úspešne! ✅`;
-                paymentSuccessMessageDiv.classList.add('show');
+                paymentSuccessMessageDiv.classList.remove('payment-error-message'); // Remove error style if present
+                paymentSuccessMessageDiv.classList.add('payment-success-message', 'show');
                 setTimeout(() => {
-                    paymentSuccessMessageDiv.classList.remove('show');
-                }, 3000); // Hide after 3 seconds
+                    paymentSuccessMessageDiv.classList.remove('payment-success-message', 'show');
+                }, 3000);
 
-                // onSnapshot will handle UI update
             } catch (e) {
-                console.error("Error adding document: ", e);
-                // If there's a Firebase error, still show a message
+                console.error("Error adding document to Firestore: ", e);
                 paymentSuccessMessageDiv.textContent = `Nastala chyba pri spracovaní nákupu. Skúste to prosím znova. ❌`;
-                paymentSuccessMessageDiv.classList.add('bg-red-100', 'text-red-800', 'show');
+                paymentSuccessMessageDiv.classList.remove('payment-success-message'); // Remove success style if present
+                paymentSuccessMessageDiv.classList.add('payment-error-message', 'show');
                 setTimeout(() => {
-                    paymentSuccessMessageDiv.classList.remove('show', 'bg-red-100', 'text-red-800');
-                }, 5000); // Show error for longer
+                    paymentSuccessMessageDiv.classList.remove('payment-error-message', 'show');
+                }, 5000);
             }
         }
 
-        // Main DOMContentLoaded logic
         document.addEventListener('DOMContentLoaded', async () => {
-            // Wait for Firebase auth to be ready and userId to be set
-            // The userId variable will be updated globally by initializeFirebaseAndAuth
             await initializeFirebaseAndAuth();
 
             const wordInput = document.getElementById('wordInput');
@@ -739,8 +740,8 @@
             const purchaseModalButtons = document.querySelectorAll('.purchase-modal-btn');
             const speakTranslatedWordButton = document.getElementById('speakTranslatedWord');
 
-            let lastTranslatedText = ''; // Stores the last translated text
-            let lastTargetLanguage = ''; // Stores the last target language code
+            let lastTranslatedText = '';
+            let lastTargetLanguage = '';
 
             unlockTranslatorButton.addEventListener('click', () => {
                 paymentModal.classList.add('show');
@@ -750,39 +751,41 @@
                 paymentModal.classList.remove('show');
             });
 
-            // Close modal when clicking outside content
             paymentModal.addEventListener('click', (e) => {
                 if (e.target === paymentModal) {
                     paymentModal.classList.remove('show');
                 }
             });
 
-            // Simulate package purchase for main section buttons
             purchasePackageButtons.forEach(button => {
                 button.addEventListener('click', async (e) => {
                     const packageName = e.target.dataset.package;
-                    // userId is now guaranteed to be set or null by initializeFirebaseAndAuth
                     if (userId) {
-                        await setPaymentStatusInFirestore(appId, userId, packageName); // Use global appId
-                        // Removed alert, now handled by paymentSuccessMessageDiv
+                        await setPaymentStatusInFirestore(appId, userId, packageName);
                     } else {
-                        // This case should ideally only be hit if Firebase initialization failed entirely.
                         console.error("User ID is not available for purchase. Firebase auth might have failed.");
-                        // The user will simply not proceed with the purchase, or a different error handling could be implemented.
+                        paymentSuccessMessageDiv.textContent = `Nastala chyba pri spracovaní nákupu (ID používateľa nie je k dispozícii). ❌`;
+                        paymentSuccessMessageDiv.classList.add('payment-error-message', 'show');
+                        setTimeout(() => {
+                            paymentSuccessMessageDiv.classList.remove('payment-error-message', 'show');
+                        }, 5000);
                     }
                 });
             });
 
-            // Simulate package purchase for modal buttons
             purchaseModalButtons.forEach(button => {
                 button.addEventListener('click', async (e) => {
                     const packageName = e.target.dataset.package;
                     if (userId) {
-                        await setPaymentStatusInFirestore(appId, userId, packageName); // Use global appId
-                        // Removed alert, now handled by paymentSuccessMessageDiv
-                        // paymentModal.classList.remove('show'); // Keep modal open to show success message
+                        await setPaymentStatusInFirestore(appId, userId, packageName);
+                        paymentModal.classList.remove('show'); // Close modal after "purchase"
                     } else {
                         console.error("User ID is not available for purchase from modal. Firebase auth might have failed.");
+                        paymentSuccessMessageDiv.textContent = `Nastala chyba pri spracovaní nákupu (ID používateľa nie je k dispozícii). ❌`;
+                        paymentSuccessMessageDiv.classList.add('payment-error-message', 'show');
+                        setTimeout(() => {
+                            paymentSuccessMessageDiv.classList.remove('payment-error-message', 'show');
+                        }, 5000);
                     }
                 });
             });
@@ -794,15 +797,15 @@
             });
 
             translateButton.addEventListener('click', async () => {
-                const currentSubscriptionStatus = subscriptionStatusDiv.textContent; // A quick way to infer status
+                const currentSubscriptionStatus = subscriptionStatusDiv.textContent;
                 const isCurrentlyPaid = currentSubscriptionStatus.includes('Platí do:');
 
                 if (!isCurrentlyPaid) {
                     translationResult.innerHTML = 'Preklad je dostupný len pre predplatiteľov. Prosím, zakúpte si balíček.';
                     translationResult.classList.remove('text-indigo-700');
                     translationResult.classList.add('text-red-600');
-                    speakTranslatedWordButton.classList.add('hidden'); // Hide speaker button
-                    paymentModal.classList.add('show'); // Show modal if not paid
+                    speakTranslatedWordButton.classList.add('hidden');
+                    paymentModal.classList.add('show');
                     return;
                 }
 
@@ -814,25 +817,23 @@
                     translationResult.innerHTML = 'Prosím, zadajte slovo na preklad.';
                     translationResult.classList.remove('text-indigo-700');
                     translationResult.classList.add('text-red-600');
-                    speakTranslatedWordButton.classList.add('hidden'); // Hide speaker button
+                    speakTranslatedWordButton.classList.add('hidden');
                     return;
                 }
 
-                translationResult.innerHTML = ''; // Clear previous result and button
+                translationResult.innerHTML = '';
                 loadingIndicator.classList.remove('hidden');
                 translationResult.classList.remove('text-red-600');
                 translationResult.classList.add('text-indigo-700');
-                speakTranslatedWordButton.classList.add('hidden'); // Hide speaker button during loading
+                speakTranslatedWordButton.classList.add('hidden');
 
                 try {
-                    // Construct the prompt for the Gemini API
                     const prompt = `Preložte slovo "${word}" do ${targetLanguageName} (${targetLanguage}). Poskytnite iba preložené slovo, bez ďalšieho textu alebo vysvetlení.`;
-
                     let chatHistory = [];
                     chatHistory.push({ role: "user", parts: [{ text: prompt }] });
 
                     const payload = { contents: chatHistory };
-                    const apiKey = "AIzaSyA7UeU1kIC_0VF5HNCeEhrBkPFoeoIiC4o"; // Váš API kľúč
+                    const apiKey = "AIzaSyA7UeU1kIC_0VF5HNCeEhrBkPFoeoIiC4o";
                     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                     const response = await fetch(apiUrl, {
@@ -847,26 +848,24 @@
                         result.candidates[0].content && result.candidates[0].content.parts &&
                         result.candidates[0].content.parts.length > 0) {
                         const translatedText = result.candidates[0].content.parts[0].text.trim();
-                        lastTranslatedText = translatedText; // Store for replay
-                        lastTargetLanguage = targetLanguage; // Store for replay
+                        lastTranslatedText = translatedText;
+                        lastTargetLanguage = targetLanguage;
 
                         translationResult.innerHTML = `Preklad: "${translatedText}"`;
-                        speakTranslatedWordButton.classList.remove('hidden'); // Show speaker button
-                        speakText(translatedText, targetLanguage); // Speak automatically
+                        speakTranslatedWordButton.classList.remove('hidden');
+                        speakText(translatedText, targetLanguage);
                     } else {
-                        // If translation fails or response is unexpected, just clear the result area
-                        translationResult.innerHTML = ''; // Clear the result
-                        translationResult.classList.remove('text-red-600'); // Remove error styling
-                        translationResult.classList.add('text-indigo-700'); // Re-apply default styling
-                        speakTranslatedWordButton.classList.add('hidden'); // Hide speaker button
+                        translationResult.innerHTML = '';
+                        translationResult.classList.remove('text-red-600');
+                        translationResult.classList.add('text-indigo-700');
+                        speakTranslatedWordButton.classList.add('hidden');
                     }
                 } catch (error) {
                     console.error('Chyba pri preklade:', error);
-                    // If an error occurs, just clear the result area
-                    translationResult.innerHTML = ''; // Clear the result
-                    translationResult.classList.remove('text-red-600'); // Remove error styling
-                    translationResult.classList.add('text-indigo-700'); // Re-apply default styling
-                    speakTranslatedWordButton.classList.add('hidden'); // Hide speaker button
+                    translationResult.innerHTML = '';
+                    translationResult.classList.remove('text-red-600');
+                    translationResult.classList.add('text-indigo-700');
+                    speakTranslatedWordButton.classList.add('hidden');
                 } finally {
                     loadingIndicator.classList.add('hidden');
                 }
@@ -875,6 +874,7 @@
     </script>
 </body>
 </html>
+
 
 
 
