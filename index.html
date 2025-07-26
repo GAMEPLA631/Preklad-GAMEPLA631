@@ -133,7 +133,7 @@
             <nav>
                 <ul class="flex space-x-6">
                     <li><a href="#about" class="text-gray-700 hover:text-indigo-600 font-medium">O nás</a></li>
-                    <li><a href="#services" class="text-gray-700 hover:text-indigo-600 font-medium">Služby</a></li>
+                    <li><a href="#services" class="text-700 hover:text-indigo-600 font-medium">Služby</a></li>
                     <li><a href="#word-translator" class="text-gray-700 hover:text-indigo-600 font-medium">Prekladač slov</a></li>
                     <li><a href="#packages" class="text-gray-700 hover:text-indigo-600 font-medium">Balíčky</a></li>
                     <li><a href="#pricing" class="text-gray-700 hover:text-indigo-600 font-medium">Cenník</a></li>
@@ -569,6 +569,7 @@
 
     <!-- Firebase SDKs -->
     <script type="module">
+        console.log("Script start."); // Added for debugging
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
@@ -730,6 +731,7 @@
                 });
                 console.log("Payment status updated in Firestore for userId:", userId, "packageName:", packageName);
                 paymentSuccessMessageDiv.textContent = `Platba za balíček ${packageName} prebehla úspešne! ✅`;
+                paymentSuccessMessageDiv.classList.remove('payment-error-message'); // Remove error style if present
                 paymentSuccessMessageDiv.classList.add('payment-success-message', 'show');
                 setTimeout(() => {
                     paymentSuccessMessageDiv.classList.remove('payment-success-message', 'show');
@@ -738,6 +740,7 @@
             } catch (e) {
                 console.error("Error adding document to Firestore: ", e);
                 paymentSuccessMessageDiv.textContent = `Nastala chyba pri spracovaní nákupu. Skúste to prosím znova. ❌`;
+                paymentSuccessMessageDiv.classList.remove('payment-success-message'); // Remove success style if present
                 paymentSuccessMessageDiv.classList.add('payment-error-message', 'show');
                 setTimeout(() => {
                     paymentSuccessMessageDiv.classList.remove('payment-error-message', 'show');
@@ -765,149 +768,176 @@
             let lastTranslatedText = '';
             let lastTargetLanguage = '';
 
-            unlockTranslatorButton.addEventListener('click', () => {
-                console.log("Unlock Translator button clicked.");
-                paymentModal.classList.add('show');
-            });
-
-            closeModalButton.addEventListener('click', () => {
-                console.log("Close modal button clicked.");
-                paymentModal.classList.remove('show');
-            });
-
-            paymentModal.addEventListener('click', (e) => {
-                if (e.target === paymentModal) {
-                    console.log("Clicked outside modal, closing.");
-                    paymentModal.classList.remove('show');
-                }
-            });
-
-            purchasePackageButtons.forEach(button => {
-                button.addEventListener('click', async (e) => {
-                    const packageName = e.target.dataset.package;
-                    console.log("Purchase button clicked for package:", packageName);
-                    if (userId) {
-                        await setPaymentStatusInFirestore(appId, userId, packageName);
-                    } else {
-                        console.error("User ID is not available for purchase. Firebase auth might have failed.");
-                        paymentSuccessMessageDiv.textContent = `Nastala chyba pri spracovaní nákupu (ID používateľa nie je k dispozícii). ❌`;
-                        paymentSuccessMessageDiv.classList.add('payment-error-message', 'show');
-                        setTimeout(() => {
-                            paymentSuccessMessageDiv.classList.remove('payment-error-message', 'show');
-                        }, 5000);
-                    }
-                });
-            });
-
-            purchaseModalButtons.forEach(button => {
-                button.addEventListener('click', async (e) => {
-                    const packageName = e.target.dataset.package;
-                    console.log("Modal purchase button clicked for package:", packageName);
-                    if (userId) {
-                        await setPaymentStatusInFirestore(appId, userId, packageName);
-                        paymentModal.classList.remove('show'); // Close modal after "purchase"
-                    } else {
-                        console.error("User ID is not available for purchase from modal. Firebase auth might have failed.");
-                        paymentSuccessMessageDiv.textContent = `Nastala chyba pri spracovaní nákupu (ID používateľa nie je k dispozícii). ❌`;
-                        paymentSuccessMessageDiv.classList.add('payment-error-message', 'show');
-                        setTimeout(() => {
-                            paymentSuccessMessageDiv.classList.remove('payment-error-message', 'show');
-                        }, 5000);
-                    }
-                });
-            });
-
-            speakTranslatedWordButton.addEventListener('click', () => {
-                console.log("Speak translated word button clicked.");
-                if (lastTranslatedText && lastTargetLanguage) {
-                    speakText(lastTranslatedText, lastTargetLanguage);
-                }
-            });
-
-            translateButton.addEventListener('click', async () => {
-                console.log("Translate button clicked.");
-                const currentSubscriptionStatus = subscriptionStatusDiv.textContent;
-                const isCurrentlyPaid = currentSubscriptionStatus.includes('Platí do:');
-
-                if (!isCurrentlyPaid) {
-                    console.log("Translator locked, showing payment wall.");
-                    translationResult.innerHTML = 'Preklad je dostupný len pre predplatiteľov. Prosím, zakúpte si balíček.';
-                    translationResult.classList.remove('text-indigo-700');
-                    translationResult.classList.add('text-red-600');
-                    speakTranslatedWordButton.classList.add('hidden');
-                    paymentModal.classList.add('show');
-                    return;
-                }
-
-                const word = wordInput.value.trim();
-                const targetLanguage = languageSelect.value;
-                const targetLanguageName = languageSelect.options[languageSelect.selectedIndex].text;
-
-                if (!word) {
-                    console.log("No word entered for translation.");
-                    translationResult.innerHTML = 'Prosím, zadajte slovo na preklad.';
-                    translationResult.classList.remove('text-indigo-700');
-                    translationResult.classList.add('text-red-600');
-                    speakTranslatedWordButton.classList.add('hidden');
-                    return;
-                }
-
-                translationResult.innerHTML = '';
-                loadingIndicator.classList.remove('hidden');
-                translationResult.classList.remove('text-red-600');
-                translationResult.classList.add('text-indigo-700');
-                speakTranslatedWordButton.classList.add('hidden');
-                console.log(`Translating "${word}" to ${targetLanguageName}...`);
-
-                try {
-                    const prompt = `Preložte slovo "${word}" do ${targetLanguageName} (${targetLanguage}). Poskytnite iba preložené slovo, bez ďalšieho textu alebo vysvetlení.`;
-                    let chatHistory = [];
-                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-
-                    const payload = { contents: chatHistory };
-                    const apiKey = "AIzaSyA7UeU1kIC_0VF5HNCeEhrBkPFoeoIiC4o"; // API key is provided by Canvas runtime
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
+            // Add a try-catch around the event listener attachments to catch any unexpected errors
+            try {
+                if (unlockTranslatorButton) { // Check if element exists
+                    unlockTranslatorButton.addEventListener('click', () => {
+                        console.log("CLICK: Unlock Translator button clicked.");
+                        paymentModal.classList.add('show');
                     });
-
-                    const result = await response.json();
-                    console.log("Gemini API response:", result);
-
-                    if (result.candidates && result.candidates.length > 0 &&
-                        result.candidates[0].content && result.candidates[0].content.parts &&
-                        result.candidates[0].content.parts.length > 0) {
-                        const translatedText = result.candidates[0].content.parts[0].text.trim();
-                        lastTranslatedText = translatedText;
-                        lastTargetLanguage = targetLanguage;
-
-                        translationResult.innerHTML = `Preklad: "${translatedText}"`;
-                        speakTranslatedWordButton.classList.remove('hidden');
-                        speakText(translatedText, targetLanguage);
-                    } else {
-                        console.warn("Unexpected Gemini API response structure or no translation found.");
-                        translationResult.innerHTML = 'Preklad sa nepodarilo získať.';
-                        translationResult.classList.remove('text-indigo-700');
-                        translationResult.classList.add('text-red-600');
-                        speakTranslatedWordButton.classList.add('hidden');
-                    }
-                } catch (error) {
-                    console.error('Chyba pri preklade:', error);
-                    translationResult.innerHTML = 'Nastala chyba pri preklade. Skúste to prosím znova.';
-                    translationResult.classList.remove('text-indigo-700');
-                    translationResult.classList.add('text-red-600');
-                    speakTranslatedWordButton.classList.add('hidden');
-                } finally {
-                    loadingIndicator.classList.add('hidden');
+                } else {
+                    console.error("Element #unlockTranslatorButton not found!");
                 }
-            });
+
+                if (closeModalButton) { // Check if element exists
+                    closeModalButton.addEventListener('click', () => {
+                        console.log("CLICK: Close modal button clicked.");
+                        paymentModal.classList.remove('show');
+                    });
+                } else {
+                    console.error("Element #closeModal not found!");
+                }
+
+                if (paymentModal) { // Check if element exists
+                    paymentModal.addEventListener('click', (e) => {
+                        if (e.target === paymentModal) {
+                            console.log("CLICK: Clicked outside modal, closing.");
+                            paymentModal.classList.remove('show');
+                        }
+                    });
+                } else {
+                    console.error("Element #paymentModal not found!");
+                }
+
+
+                purchasePackageButtons.forEach(button => {
+                    button.addEventListener('click', async (e) => {
+                        const packageName = e.target.dataset.package;
+                        console.log("CLICK: Purchase button clicked for package:", packageName);
+                        if (userId) {
+                            await setPaymentStatusInFirestore(appId, userId, packageName);
+                        } else {
+                            console.error("User ID is not available for purchase. Firebase auth might have failed.");
+                            paymentSuccessMessageDiv.textContent = `Nastala chyba pri spracovaní nákupu (ID používateľa nie je k dispozícii). ❌`;
+                            paymentSuccessMessageDiv.classList.add('payment-error-message', 'show');
+                            setTimeout(() => {
+                                paymentSuccessMessageDiv.classList.remove('payment-error-message', 'show');
+                            }, 5000);
+                        }
+                    });
+                });
+
+                purchaseModalButtons.forEach(button => {
+                    button.addEventListener('click', async (e) => {
+                        const packageName = e.target.dataset.package;
+                        console.log("CLICK: Modal purchase button clicked for package:", packageName);
+                        if (userId) {
+                            await setPaymentStatusInFirestore(appId, userId, packageName);
+                            paymentModal.classList.remove('show'); // Close modal after "purchase"
+                        } else {
+                            console.error("User ID is not available for purchase from modal. Firebase auth might have failed.");
+                            paymentSuccessMessageDiv.textContent = `Nastala chyba pri spracovaní nákupu (ID používateľa nie je k dispozícii). ❌`;
+                            paymentSuccessMessageDiv.classList.add('payment-error-message', 'show');
+                            setTimeout(() => {
+                                paymentSuccessMessageDiv.classList.remove('payment-error-message', 'show');
+                            }, 5000);
+                        }
+                    });
+                });
+
+                if (speakTranslatedWordButton) { // Check if element exists
+                    speakTranslatedWordButton.addEventListener('click', () => {
+                        console.log("CLICK: Speak translated word button clicked.");
+                        if (lastTranslatedText && lastTargetLanguage) {
+                            speakText(lastTranslatedText, lastTargetLanguage);
+                        }
+                    });
+                } else {
+                    console.error("Element #speakTranslatedWord not found!");
+                }
+
+                if (translateButton) { // Check if element exists
+                    translateButton.addEventListener('click', async () => {
+                        console.log("CLICK: Translate button clicked.");
+                        const currentSubscriptionStatus = subscriptionStatusDiv.textContent;
+                        const isCurrentlyPaid = currentSubscriptionStatus.includes('Platí do:');
+
+                        if (!isCurrentlyPaid) {
+                            console.log("Translator locked, showing payment wall.");
+                            translationResult.innerHTML = 'Preklad je dostupný len pre predplatiteľov. Prosím, zakúpte si balíček.';
+                            translationResult.classList.remove('text-indigo-700');
+                            translationResult.classList.add('text-red-600');
+                            speakTranslatedWordButton.classList.add('hidden');
+                            paymentModal.classList.add('show');
+                            return;
+                        }
+
+                        const word = wordInput.value.trim();
+                        const targetLanguage = languageSelect.value;
+                        const targetLanguageName = languageSelect.options[languageSelect.selectedIndex].text;
+
+                        if (!word) {
+                            console.log("No word entered for translation.");
+                            translationResult.innerHTML = 'Prosím, zadajte slovo na preklad.';
+                            translationResult.classList.remove('text-indigo-700');
+                            translationResult.classList.add('text-red-600');
+                            speakTranslatedWordButton.classList.add('hidden');
+                            return;
+                        }
+
+                        translationResult.innerHTML = '';
+                        loadingIndicator.classList.remove('hidden');
+                        translationResult.classList.remove('text-red-600');
+                        translationResult.classList.add('text-indigo-700');
+                        speakTranslatedWordButton.classList.add('hidden');
+                        console.log(`Translating "${word}" to ${targetLanguageName}...`);
+
+                        try {
+                            const prompt = `Preložte slovo "${word}" do ${targetLanguageName} (${targetLanguage}). Poskytnite iba preložené slovo, bez ďalšieho textu alebo vysvetlení.`;
+                            let chatHistory = [];
+                            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+
+                            const payload = { contents: chatHistory };
+                            const apiKey = "AIzaSyA7UeU1kIC_0VF5HNCeEhrBkPFoeoIiC4o"; // API key is provided by Canvas runtime
+                            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                            const response = await fetch(apiUrl, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(payload)
+                            });
+
+                            const result = await response.json();
+                            console.log("Gemini API response:", result);
+
+                            if (result.candidates && result.candidates.length > 0 &&
+                                result.candidates[0].content && result.candidates[0].content.parts &&
+                                result.candidates[0].content.parts.length > 0) {
+                                const translatedText = result.candidates[0].content.parts[0].text.trim();
+                                lastTranslatedText = translatedText;
+                                lastTargetLanguage = targetLanguage;
+
+                                translationResult.innerHTML = `Preklad: "${translatedText}"`;
+                                speakTranslatedWordButton.classList.remove('hidden');
+                                speakText(translatedText, targetLanguage);
+                            } else {
+                                console.warn("Unexpected Gemini API response structure or no translation found.");
+                                translationResult.innerHTML = 'Preklad sa nepodarilo získať.';
+                                translationResult.classList.remove('text-indigo-700');
+                                translationResult.classList.add('text-red-600');
+                                speakTranslatedWordButton.classList.add('hidden');
+                            }
+                        } catch (error) {
+                            console.error('Chyba pri preklade:', error);
+                            translationResult.innerHTML = 'Nastala chyba pri preklade. Skúste to prosím znova.';
+                            translationResult.classList.remove('text-indigo-700');
+                            translationResult.classList.add('text-red-600');
+                            speakTranslatedWordButton.classList.add('hidden');
+                        } finally {
+                            loadingIndicator.classList.add('hidden');
+                        }
+                    });
+                } else {
+                    console.error("Element #translateButton not found!");
+                }
+
+            } catch (e) {
+                console.error("Error attaching event listeners:", e);
+                // Display a general error message if something went wrong during setup
+                paymentSuccessMessageDiv.textContent = `Nastala kritická chyba pri inicializácii aplikácie. Skúste obnoviť stránku. ❌`;
+                paymentSuccessMessageDiv.classList.add('payment-error-message', 'show');
+            }
         });
     </script>
 </body>
-
-
-
-
+</html>
