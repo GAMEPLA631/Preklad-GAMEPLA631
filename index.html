@@ -113,7 +113,7 @@
             <nav>
                 <ul class="flex space-x-6">
                     <li><a href="#about" class="text-gray-700 hover:text-indigo-600 font-medium">O nás</a></li>
-                    <li><a href="#services" class="text-700 hover:text-indigo-600 font-medium">Služby</a></li>
+                    <li><a href="#services" class="text-gray-700 hover:text-indigo-600 font-medium">Služby</a></li>
                     <li><a href="#word-translator" class="text-gray-700 hover:text-indigo-600 font-medium">Prekladač slov</a></li>
                     <li><a href="#packages" class="text-gray-700 hover:text-indigo-600 font-medium">Balíčky</a></li>
                     <li><a href="#pricing" class="text-gray-700 hover:text-indigo-600 font-medium">Cenník</a></li>
@@ -263,6 +263,9 @@
                     <p class="text-md text-gray-700 mb-6">Pre odomknutie tejto prémiovej funkcie si prosím zakúpte jeden z našich ročných balíčkov.</p>
                     <button id="unlockTranslatorButton" class="btn-primary">Odomknúť prekladač</button>
                 </div>
+                <div id="subscriptionStatus" class="mt-4 text-sm text-gray-600 hidden">
+                    <!-- Subscription status and expiration date will be displayed here -->
+                </div>
             </div>
         </div>
     </section>
@@ -285,7 +288,7 @@
                         <li>&#10003; Prístup k 10 jazykom</li>
                         <li>&#10003; Základná podpora</li>
                     </ul>
-                    <button class="btn-primary w-full purchase-package-btn">Zakúpiť</button>
+                    <button class="btn-primary w-full purchase-package-btn" data-package="Základný">Zakúpiť</button>
                 </div>
                 <!-- Package 2 -->
                 <div class="package-card">
@@ -541,15 +544,140 @@
         </div>
     </div>
 
-    <script>
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        let app, db, auth, userId;
+        const subscriptionStatusDiv = document.getElementById('subscriptionStatus');
+
+        // Function to update the displayed expiration date
+        function updateExpirationDisplay(message) {
+            subscriptionStatusDiv.textContent = message;
+            subscriptionStatusDiv.classList.remove('hidden');
+        }
+
+        // Function to update translator visibility (now depends on Firestore state)
+        function updateTranslatorVisibility(paidStatus) {
+            const translatorContent = document.getElementById('translatorContent');
+            const paymentWall = document.getElementById('paymentWall');
+
+            if (paidStatus) {
+                translatorContent.classList.remove('hidden');
+                paymentWall.classList.add('hidden');
+            } else {
+                translatorContent.classList.add('hidden');
+                paymentWall.classList.remove('hidden');
+            }
+        }
+
+        async function initializeFirebaseAndAuth() {
+            const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+            if (Object.keys(firebaseConfig).length === 0) {
+                console.error("Firebase config not found. Please ensure __firebase_config is set.");
+                return;
+            }
+
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+
+            const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    userId = user.uid;
+                    console.log("User ID:", userId);
+                    setupFirestoreListener(appId, userId);
+                } else {
+                    console.log("No user is signed in. Attempting anonymous sign-in.");
+                    try {
+                        if (initialAuthToken) {
+                            await signInWithCustomToken(auth, initialAuthToken);
+                            console.log("Signed in with custom token.");
+                        } else {
+                            await signInAnonymously(auth);
+                            console.log("Signed in anonymously.");
+                        }
+                    } catch (error) {
+                        console.error("Error during initial authentication:", error);
+                        updateExpirationDisplay('Chyba pri prihlásení.');
+                        updateTranslatorVisibility(false);
+                    }
+                }
+            });
+        }
+
+        function setupFirestoreListener(appId, userId) {
+            const docRef = doc(db, `artifacts/${appId}/users/${userId}/translatorSubscription/status`);
+
+            onSnapshot(docRef, (docSnap) => {
+                const now = new Date();
+                let currentPaidStatus = false;
+                let expirationMessage = 'Nemáte aktívne predplatné.';
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    const expirationTimestamp = data.expirationDate;
+
+                    if (expirationTimestamp && expirationTimestamp.toDate) { // Check if it's a Firestore Timestamp
+                        const expirationDate = expirationTimestamp.toDate();
+                        if (expirationDate > now) {
+                            currentPaidStatus = true;
+                            expirationMessage = `Predplatné platí do: ${expirationDate.toLocaleDateString('sk-SK')}`;
+                        } else {
+                            currentPaidStatus = false;
+                            expirationMessage = 'Vaše predplatné vypršalo.';
+                        }
+                    } else {
+                        expirationMessage = 'Neplatné dátum vypršania v databáze.';
+                    }
+                }
+
+                updateTranslatorVisibility(currentPaidStatus);
+                updateExpirationDisplay(expirationMessage);
+
+            }, (error) => {
+                console.error("Error listening to Firestore document:", error);
+                updateTranslatorVisibility(false);
+                updateExpirationDisplay('Chyba pri načítaní predplatného.');
+            });
+        }
+
+        async function setPaymentStatusInFirestore(appId, userId, packageName) {
+            const docRef = doc(db, `artifacts/${appId}/users/${userId}/translatorSubscription/status`);
+            const now = new Date();
+            // Calculate expiration for January 1st of the next year
+            const expirationDate = new Date(now.getFullYear() + 1, 0, 1);
+
+            try {
+                await setDoc(docRef, {
+                    isPaid: true,
+                    expirationDate: expirationDate, // Firestore will convert Date objects to Timestamps
+                    packageName: packageName,
+                    purchasedAt: now
+                });
+                console.log("Payment status updated in Firestore.");
+                // onSnapshot will handle UI update
+            } catch (e) {
+                console.error("Error adding document: ", e);
+                alert("Nastala chyba pri ukladaní platobného statusu. Skúste to prosím znova.");
+            }
+        }
+
+        // Main DOMContentLoaded logic
         document.addEventListener('DOMContentLoaded', () => {
+            initializeFirebaseAndAuth(); // Initialize Firebase and authentication
+
             const wordInput = document.getElementById('wordInput');
             const languageSelect = document.getElementById('languageSelect');
             const translateButton = document.getElementById('translateButton');
             const translationResult = document.getElementById('translationResult');
             const loadingIndicator = document.getElementById('loadingIndicator');
-            const translatorContent = document.getElementById('translatorContent');
-            const paymentWall = document.getElementById('paymentWall');
             const unlockTranslatorButton = document.getElementById('unlockTranslatorButton');
             const paymentModal = document.getElementById('paymentModal');
             const closeModalButton = document.getElementById('closeModal');
@@ -557,34 +685,8 @@
             const purchaseModalButtons = document.querySelectorAll('.purchase-modal-btn');
             const speakTranslatedWordButton = document.getElementById('speakTranslatedWord');
 
-            let isPaidUser = false; // Simulated payment status
             let lastTranslatedText = ''; // Stores the last translated text
             let lastTargetLanguage = ''; // Stores the last target language code
-
-            // Function to update translator visibility
-            function updateTranslatorVisibility() {
-                if (isPaidUser) {
-                    translatorContent.classList.remove('hidden');
-                    paymentWall.classList.add('hidden');
-                } else {
-                    translatorContent.classList.add('hidden');
-                    paymentWall.classList.remove('hidden');
-                }
-            }
-
-            // Function to speak the text
-            function speakText(text, lang) {
-                if ('speechSynthesis' in window) {
-                    const utterance = new SpeechSynthesisUtterance(text);
-                    utterance.lang = lang; // Set language for correct pronunciation
-                    speechSynthesis.speak(utterance);
-                } else {
-                    console.warn('Web Speech API (SpeechSynthesis) nie je podporované vo vašom prehliadači.');
-                }
-            }
-
-            // Initial check on page load
-            updateTranslatorVisibility();
 
             unlockTranslatorButton.addEventListener('click', () => {
                 paymentModal.classList.add('show');
@@ -601,25 +703,30 @@
                 }
             });
 
-            // Simulate package purchase
+            // Simulate package purchase for main section buttons
             purchasePackageButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
+                button.addEventListener('click', async (e) => {
                     const packageName = e.target.dataset.package;
-                    alert(`Ďakujeme! Zakúpili ste si balíček: ${packageName}. (Toto je len simulácia platby)`);
-                    isPaidUser = true; // Set user as paid
-                    updateTranslatorVisibility();
-                    // In a real app, you would redirect to payment gateway or process payment
+                    if (userId) {
+                        await setPaymentStatusInFirestore(appId, userId, packageName);
+                        alert(`Ďakujeme! Zakúpili ste si balíček: ${packageName}. (Simulácia platby uloženej do databázy)`);
+                    } else {
+                        alert('Pre zakúpenie balíčka je potrebné prihlásenie. Skúste prosím obnoviť stránku.');
+                    }
                 });
             });
 
+            // Simulate package purchase for modal buttons
             purchaseModalButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
+                button.addEventListener('click', async (e) => {
                     const packageName = e.target.dataset.package;
-                    alert(`Ďakujeme! Zakúpili ste si balíček: ${packageName}. (Toto je len simulácia platby)`);
-                    isPaidUser = true; // Set user as paid
-                    paymentModal.classList.remove('show'); // Close modal
-                    updateTranslatorVisibility();
-                    // In a real app, you would redirect to payment gateway or process payment
+                    if (userId) {
+                        await setPaymentStatusInFirestore(appId, userId, packageName);
+                        alert(`Ďakujeme! Zakúpili ste si balíček: ${packageName}. (Simulácia platby uloženej do databázy)`);
+                        paymentModal.classList.remove('show'); // Close modal after "purchase"
+                    } else {
+                        alert('Pre zakúpenie balíčka je potrebné prihlásenie. Skúste prosím obnoviť stránku.');
+                    }
                 });
             });
 
@@ -630,7 +737,15 @@
             });
 
             translateButton.addEventListener('click', async () => {
-                if (!isPaidUser) {
+                // Check isPaidUser directly from the Firestore listener's state (which is global `currentPaidStatus` in setupFirestoreListener)
+                // We need a way to get the current `isPaidUser` from the listener.
+                // For simplicity, let's assume `isPaidUser` is updated globally by `setupFirestoreListener`.
+                // If it's not, we'd need a more robust state management.
+                const currentSubscriptionStatus = subscriptionStatusDiv.textContent; // A quick way to infer status
+                const isCurrentlyPaid = currentSubscriptionStatus.includes('Platí do:');
+
+
+                if (!isCurrentlyPaid) {
                     translationResult.innerHTML = 'Preklad je dostupný len pre predplatiteľov. Prosím, zakúpte si balíček.';
                     translationResult.classList.remove('text-indigo-700');
                     translationResult.classList.add('text-red-600');
@@ -665,7 +780,7 @@
                     chatHistory.push({ role: "user", parts: [{ text: prompt }] });
 
                     const payload = { contents: chatHistory };
-                    const apiKey = "AIzaSyD0OIR4P5gjUBvVJfWUSYZmQGck_aKoVv8"; // Váš API kľúč
+                    const apiKey = "AIzaSyA7UeU1kIC_0VF5HNCeEhrBkPFoeoIiC4o"; // Váš API kľúč
                     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                     const response = await fetch(apiUrl, {
