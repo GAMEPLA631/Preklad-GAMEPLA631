@@ -308,7 +308,7 @@
                         <li>&#10003; Prístup k 10 jazykom</li>
                         <li>&#10003; Základná podpora</li>
                     </ul>
-                    <button class="btn-primary w-full purchase-package-btn">Zakúpiť</button>
+                    <button class="btn-primary w-full purchase-package-btn" data-package="Základný">Zakúpiť</button>
                 </div>
                 <!-- Package 2 -->
                 <div class="package-card">
@@ -319,7 +319,7 @@
                         <li>&#10003; Prístup k 25 jazykom</li>
                         <li>&#10003; Prioritná podpora</li>
                     </ul>
-                    <button class="btn-primary w-full purchase-package-btn">Zakúpiť</button>
+                    <button class="btn-primary w-full purchase-package-btn" data-package="Štandardný">Zakúpiť</button>
                 </div>
                 <!-- Package 3 (Recommended) -->
                 <div class="package-card recommended">
@@ -331,7 +331,7 @@
                         <li>&#10003; VIP podpora 24/7</li>
                         <li>&#10003; Historie prekladov</li>
                     </ul>
-                    <button class="btn-primary w-full purchase-package-btn">Zakúpiť</button>
+                    <button class="btn-primary w-full purchase-package-btn" data-package="Profesionálny">Zakúpiť</button>
                 </div>
                 <!-- Package 4 -->
                 <div class="package-card">
@@ -343,7 +343,7 @@
                         <li>&#10003; Viac užívateľských účtov</li>
                         <li>&#10003; Osobný manažér účtu</li>
                     </ul>
-                    <button class="btn-primary w-full purchase-package-btn">Zakúpiť</button>
+                    <button class="btn-primary w-full purchase-package-btn" data-package="Firemný">Zakúpiť</button>
                 </div>
                 <!-- Package 5 -->
                 <div class="package-card">
@@ -354,7 +354,7 @@
                         <li>&#10003; Rozšírené API pre integráciu</li>
                         <li>&#10003; Školenie tímu</li>
                     </ul>
-                    <button class="btn-primary w-full purchase-package-btn">Zakúpiť</button>
+                    <button class="btn-primary w-full purchase-package-btn" data-package="Enterprise S">Zakúpiť</button>
                 </div>
                 <!-- Package 6 -->
                 <div class="package-card">
@@ -365,7 +365,7 @@
                         <li>&#10003; Dedikovaný server</li>
                         <li>&#10003; Pokročilé štatistiky</li>
                     </ul>
-                    <button class="btn-primary w-full purchase-package-btn">Zakúpiť</button>
+                    <button class="btn-primary w-full purchase-package-btn" data-package="Enterprise M">Zakúpiť</button>
                 </div>
                 <!-- Package 7 -->
                 <div class="package-card">
@@ -376,7 +376,7 @@
                         <li>&#10003; Prispôsobené riešenia</li>
                         <li>&#10003; Non-stop technická podpora</li>
                     </ul>
-                    <button class="btn-primary w-full purchase-package-btn">Zakúpiť</button>
+                    <button class="btn-primary w-full purchase-package-btn" data-package="Enterprise L">Zakúpiť</button>
                 </div>
                 <!-- Package 8 -->
                 <div class="package-card">
@@ -387,7 +387,7 @@
                         <li>&#10003; Exkluzívne beta funkcie</li>
                         <li>&#10003; Prioritný prístup k novinkám</li>
                     </ul>
-                    <button class="btn-primary w-full purchase-package-btn">Zakúpiť</button>
+                    <button class="btn-primary w-full purchase-package-btn" data-package="Ultimate">Zakúpiť</button>
                 </div>
                 <!-- Package 9 -->
                 <div class="package-card">
@@ -398,7 +398,7 @@
                         <li>&#10003; Osobné konzultácie s lingvistami</li>
                         <li>&#10003; Vyhradený tím pre váš projekt</li>
                     </ul>
-                    <button class="btn-primary w-full purchase-package-btn">Zakúpiť</button>
+                    <button class="btn-primary w-full purchase-package-btn" data-package="Platinový">Zakúpiť</button>
                 </div>
             </div>
         </div>
@@ -599,6 +599,17 @@
             }
         }
 
+        // Function to speak text
+        function speakText(text, lang) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = lang; // Set language for speech
+                window.speechSynthesis.speak(utterance);
+            } else {
+                console.warn('Speech synthesis not supported in this browser.');
+            }
+        }
+
         async function initializeFirebaseAndAuth() {
             return new Promise(async (resolve, reject) => {
                 const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
@@ -613,6 +624,7 @@
                 app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 auth = getAuth(app);
+                console.log("Firebase app, db, auth initialized.");
 
                 const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
@@ -629,8 +641,10 @@
                             try {
                                 if (initialAuthToken) {
                                     await signInWithCustomToken(auth, initialAuthToken);
+                                    console.log("Signed in with custom token.");
                                 } else {
                                     await signInAnonymously(auth);
+                                    console.log("Signed in anonymously.");
                                 }
                             } catch (error) {
                                 console.error("Error during initial authentication:", error);
@@ -647,10 +661,11 @@
 
         function setupFirestoreListener(appId, userId) {
             if (!db) {
-                console.error("Firestore DB not initialized.");
+                console.error("Firestore DB not initialized for listener setup.");
                 return;
             }
             const docRef = doc(db, `artifacts/${appId}/users/${userId}/translatorSubscription/status`);
+            console.log("Setting up Firestore listener for:", docRef.path);
 
             onSnapshot(docRef, (docSnap) => {
                 const now = new Date();
@@ -660,6 +675,7 @@
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     const expirationTimestamp = data.expirationDate;
+                    console.log("Firestore data received:", data);
 
                     if (expirationTimestamp && expirationTimestamp.toDate) {
                         const expirationDate = expirationTimestamp.toDate();
@@ -673,6 +689,8 @@
                     } else {
                         expirationMessage = 'Neplatné dátum vypršania v databáze.';
                     }
+                } else {
+                    console.log("No subscription document found for userId:", userId);
                 }
 
                 updateTranslatorVisibility(currentPaidStatus);
@@ -686,8 +704,12 @@
         }
 
         async function setPaymentStatusInFirestore(appId, userId, packageName) {
+            // Clear previous messages
+            paymentSuccessMessageDiv.classList.remove('show', 'payment-success-message', 'payment-error-message');
+            paymentSuccessMessageDiv.textContent = '';
+
             if (!db || !userId) {
-                console.error("Firestore DB or User ID not initialized for setPaymentStatusInFirestore.");
+                console.error("Firestore DB or User ID not initialized for setPaymentStatusInFirestore. db:", db, "userId:", userId);
                 paymentSuccessMessageDiv.textContent = `Nastala chyba pri spracovaní nákupu. Skúste to prosím znova. ❌`;
                 paymentSuccessMessageDiv.classList.add('payment-error-message', 'show');
                 setTimeout(() => {
@@ -708,7 +730,6 @@
                 });
                 console.log("Payment status updated in Firestore for userId:", userId, "packageName:", packageName);
                 paymentSuccessMessageDiv.textContent = `Platba za balíček ${packageName} prebehla úspešne! ✅`;
-                paymentSuccessMessageDiv.classList.remove('payment-error-message'); // Remove error style if present
                 paymentSuccessMessageDiv.classList.add('payment-success-message', 'show');
                 setTimeout(() => {
                     paymentSuccessMessageDiv.classList.remove('payment-success-message', 'show');
@@ -717,7 +738,6 @@
             } catch (e) {
                 console.error("Error adding document to Firestore: ", e);
                 paymentSuccessMessageDiv.textContent = `Nastala chyba pri spracovaní nákupu. Skúste to prosím znova. ❌`;
-                paymentSuccessMessageDiv.classList.remove('payment-success-message'); // Remove success style if present
                 paymentSuccessMessageDiv.classList.add('payment-error-message', 'show');
                 setTimeout(() => {
                     paymentSuccessMessageDiv.classList.remove('payment-error-message', 'show');
@@ -726,7 +746,9 @@
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
+            console.log("DOM Content Loaded. Initializing Firebase and Auth...");
             await initializeFirebaseAndAuth();
+            console.log("Firebase and Auth initialization complete. User ID:", userId);
 
             const wordInput = document.getElementById('wordInput');
             const languageSelect = document.getElementById('languageSelect');
@@ -744,15 +766,18 @@
             let lastTargetLanguage = '';
 
             unlockTranslatorButton.addEventListener('click', () => {
+                console.log("Unlock Translator button clicked.");
                 paymentModal.classList.add('show');
             });
 
             closeModalButton.addEventListener('click', () => {
+                console.log("Close modal button clicked.");
                 paymentModal.classList.remove('show');
             });
 
             paymentModal.addEventListener('click', (e) => {
                 if (e.target === paymentModal) {
+                    console.log("Clicked outside modal, closing.");
                     paymentModal.classList.remove('show');
                 }
             });
@@ -760,6 +785,7 @@
             purchasePackageButtons.forEach(button => {
                 button.addEventListener('click', async (e) => {
                     const packageName = e.target.dataset.package;
+                    console.log("Purchase button clicked for package:", packageName);
                     if (userId) {
                         await setPaymentStatusInFirestore(appId, userId, packageName);
                     } else {
@@ -776,6 +802,7 @@
             purchaseModalButtons.forEach(button => {
                 button.addEventListener('click', async (e) => {
                     const packageName = e.target.dataset.package;
+                    console.log("Modal purchase button clicked for package:", packageName);
                     if (userId) {
                         await setPaymentStatusInFirestore(appId, userId, packageName);
                         paymentModal.classList.remove('show'); // Close modal after "purchase"
@@ -791,16 +818,19 @@
             });
 
             speakTranslatedWordButton.addEventListener('click', () => {
+                console.log("Speak translated word button clicked.");
                 if (lastTranslatedText && lastTargetLanguage) {
                     speakText(lastTranslatedText, lastTargetLanguage);
                 }
             });
 
             translateButton.addEventListener('click', async () => {
+                console.log("Translate button clicked.");
                 const currentSubscriptionStatus = subscriptionStatusDiv.textContent;
                 const isCurrentlyPaid = currentSubscriptionStatus.includes('Platí do:');
 
                 if (!isCurrentlyPaid) {
+                    console.log("Translator locked, showing payment wall.");
                     translationResult.innerHTML = 'Preklad je dostupný len pre predplatiteľov. Prosím, zakúpte si balíček.';
                     translationResult.classList.remove('text-indigo-700');
                     translationResult.classList.add('text-red-600');
@@ -814,6 +844,7 @@
                 const targetLanguageName = languageSelect.options[languageSelect.selectedIndex].text;
 
                 if (!word) {
+                    console.log("No word entered for translation.");
                     translationResult.innerHTML = 'Prosím, zadajte slovo na preklad.';
                     translationResult.classList.remove('text-indigo-700');
                     translationResult.classList.add('text-red-600');
@@ -826,6 +857,7 @@
                 translationResult.classList.remove('text-red-600');
                 translationResult.classList.add('text-indigo-700');
                 speakTranslatedWordButton.classList.add('hidden');
+                console.log(`Translating "${word}" to ${targetLanguageName}...`);
 
                 try {
                     const prompt = `Preložte slovo "${word}" do ${targetLanguageName} (${targetLanguage}). Poskytnite iba preložené slovo, bez ďalšieho textu alebo vysvetlení.`;
@@ -833,7 +865,7 @@
                     chatHistory.push({ role: "user", parts: [{ text: prompt }] });
 
                     const payload = { contents: chatHistory };
-                    const apiKey = "AIzaSyA7UeU1kIC_0VF5HNCeEhrBkPFoeoIiC4o";
+                    const apiKey = "AIzaSyA7UeU1kIC_0VF5HNCeEhrBkPFoeoIiC4o"; // API key is provided by Canvas runtime
                     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                     const response = await fetch(apiUrl, {
@@ -843,6 +875,7 @@
                     });
 
                     const result = await response.json();
+                    console.log("Gemini API response:", result);
 
                     if (result.candidates && result.candidates.length > 0 &&
                         result.candidates[0].content && result.candidates[0].content.parts &&
@@ -855,16 +888,17 @@
                         speakTranslatedWordButton.classList.remove('hidden');
                         speakText(translatedText, targetLanguage);
                     } else {
-                        translationResult.innerHTML = '';
-                        translationResult.classList.remove('text-red-600');
-                        translationResult.classList.add('text-indigo-700');
+                        console.warn("Unexpected Gemini API response structure or no translation found.");
+                        translationResult.innerHTML = 'Preklad sa nepodarilo získať.';
+                        translationResult.classList.remove('text-indigo-700');
+                        translationResult.classList.add('text-red-600');
                         speakTranslatedWordButton.classList.add('hidden');
                     }
                 } catch (error) {
                     console.error('Chyba pri preklade:', error);
-                    translationResult.innerHTML = '';
-                    translationResult.classList.remove('text-red-600');
-                    translationResult.classList.add('text-indigo-700');
+                    translationResult.innerHTML = 'Nastala chyba pri preklade. Skúste to prosím znova.';
+                    translationResult.classList.remove('text-indigo-700');
+                    translationResult.classList.add('text-red-600');
                     speakTranslatedWordButton.classList.add('hidden');
                 } finally {
                     loadingIndicator.classList.add('hidden');
@@ -873,7 +907,6 @@
         });
     </script>
 </body>
-</html>
 
 
 
