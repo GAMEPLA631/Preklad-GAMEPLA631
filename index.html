@@ -400,6 +400,29 @@
                     </ul>
                     <button class="btn-primary w-full purchase-package-btn" data-package="Platinový">Zakúpiť</button>
                 </div>
+                <!-- New Package: Battle Pass Basic -->
+                <div class="package-card bg-blue-50 border-blue-500 border-2">
+                    <h3 class="text-2xl font-bold text-blue-700 mb-2">Battle Pass Basic</h3>
+                    <p class="text-4xl font-extrabold text-blue-600 mb-4">Kód</p>
+                    <ul class="text-gray-600 text-left mb-6 space-y-2">
+                        <li>&#10003; Prístup k prekladaču slov</li>
+                        <li>&#10003; 1 rok predplatného</li>
+                        <li>&#10003; Exkluzívny odznak v profile</li>
+                    </ul>
+                    <button class="btn-primary w-full purchase-package-btn" data-package="Battle Pass Basic" data-purchase-type="battle-code">Aktivovať kódom</button>
+                </div>
+                <!-- New Package: Battle Pass Premium -->
+                <div class="package-card bg-yellow-50 border-yellow-500 border-2">
+                    <h3 class="text-2xl font-bold text-yellow-700 mb-2">Battle Pass Premium</h3>
+                    <p class="text-4xl font-extrabold text-yellow-600 mb-4">Kód</p>
+                    <ul class="text-gray-600 text-left mb-6 space-y-2">
+                        <li>&#10003; Všetko z Battle Pass Basic</li>
+                        <li>&#10003; Prístup k 25 jazykom</li>
+                        <li>&#10003; Prioritná podpora</li>
+                        <li>&#10003; Zlatý odznak v profile</li>
+                    </ul>
+                    <button class="btn-primary w-full purchase-package-btn" data-package="Battle Pass Premium" data-purchase-type="battle-code">Aktivovať kódom</button>
+                </div>
             </div>
         </div>
     </section>
@@ -469,7 +492,7 @@
             <span class="close-button" id="closeModal">&times;</span>
             <h2 class="text-3xl font-bold text-indigo-700 mb-6 text-center">Vyberte si svoj prémiový balíček</h2>
             <p class="text-lg text-gray-700 mb-8 text-center">
-                Pre prístup k nášmu exkluzívnemu prekladaču slov a ďalším výhodám si prosím vyberte jeden z našich ročných balíčkov.
+                Pre prístup k nášmu exkluzívnemu prekladaču slov a ďalším výhodám si prosím vyberte jeden z našich ročných balíčkov alebo aktivujte kód.
             </p>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Modal Package 1 -->
@@ -560,6 +583,29 @@
                     </ul>
                     <button class="btn-primary w-full purchase-modal-btn" data-package="Platinový">Zakúpiť</button>
                 </div>
+                <!-- New Modal Package: Battle Pass Basic -->
+                <div class="package-card bg-blue-50 border-blue-500 border-2">
+                    <h3 class="text-xl font-bold text-blue-700 mb-2">Battle Pass Basic</h3>
+                    <p class="text-3xl font-extrabold text-blue-600 mb-2">Kód</p>
+                    <p class="text-sm text-gray-600 mb-4">Prístup k prekladaču slov, 1 rok predplatného, exkluzívny odznak.</p>
+                    <button class="btn-primary w-full purchase-modal-btn" data-package="Battle Pass Basic" data-purchase-type="battle-code">Aktivovať kódom</button>
+                </div>
+                <!-- New Modal Package: Battle Pass Premium -->
+                <div class="package-card bg-yellow-50 border-yellow-500 border-2">
+                    <h3 class="text-xl font-bold text-yellow-700 mb-2">Battle Pass Premium</h3>
+                    <p class="text-3xl font-extrabold text-yellow-600 mb-2">Kód</p>
+                    <p class="text-sm text-gray-600 mb-4">Všetko z Battle Pass Basic, 25 jazykov, prioritná podpora, zlatý odznak.</p>
+                    <button class="btn-primary w-full purchase-modal-btn" data-package="Battle Pass Premium" data-purchase-type="battle-code">Aktivovať kódom</button>
+                </div>
+            </div>
+            <div class="mt-10 pt-6 border-t border-gray-200">
+                <h3 class="text-2xl font-bold text-indigo-700 mb-4">Aktivovať Battle Kód</h3>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4">
+                    <input type="text" id="battleCodeInput" placeholder="Zadajte svoj battle kód..."
+                           class="w-full md:w-1/2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <button id="redeemBattleCodeButton" class="btn-primary w-full md:w-auto py-3">Aktivovať kód</button>
+                </div>
+                <div id="battleCodeMessage" class="mt-4 text-center text-sm font-semibold"></div>
             </div>
         </div>
     </div>
@@ -642,6 +688,10 @@
         const speakTranslatedWordButton = document.getElementById('speakTranslatedWord');
         const paymentSuccessMessage = document.getElementById('paymentSuccessMessage');
         const paymentErrorMessage = document.getElementById('paymentErrorMessage');
+        const battleCodeInput = document.getElementById('battleCodeInput');
+        const redeemBattleCodeButton = document.getElementById('redeemBattleCodeButton');
+        const battleCodeMessage = document.getElementById('battleCodeMessage');
+
 
         // --- Helper Functions ---
 
@@ -751,6 +801,59 @@
         }
 
         /**
+         * Simulates battle code redemption and updates Firestore.
+         * @param {string} battleCode - The battle code entered by the user.
+         * @param {string} packageType - The type of package associated with the battle code.
+         */
+        async function redeemBattleCode(battleCode, packageType) {
+            if (!userId) {
+                battleCodeMessage.textContent = 'Pre aktiváciu kódu sa musíte prihlásiť.';
+                battleCodeMessage.classList.add('text-red-500');
+                return;
+            }
+
+            // Simulate battle code validation
+            // In a real application, this would involve a backend call to validate the code
+            const validCodes = {
+                "BATTLEBASIC2025": "Battle Pass Basic",
+                "BATTLEPREMIUM2025": "Battle Pass Premium"
+            };
+
+            if (validCodes[battleCode] === packageType) {
+                try {
+                    const subscriptionRef = doc(db, `artifacts/${appId}/users/${userId}/subscriptions/currentSubscription`);
+                    const expirationDate = new Date();
+                    expirationDate.setFullYear(expirationDate.getFullYear() + 1); // 1 year subscription
+
+                    await setDoc(subscriptionRef, {
+                        isSubscribed: true,
+                        packageType: packageType,
+                        expirationDate: expirationDate,
+                        redemptionDate: new Date(),
+                        redeemedCode: battleCode
+                    });
+
+                    battleCodeMessage.textContent = `Kód "${battleCode}" bol úspešne aktivovaný pre balíček "${packageType}"!`;
+                    battleCodeMessage.classList.remove('text-red-500');
+                    battleCodeMessage.classList.add('text-green-500');
+                    displayMessage('success', `Kód "${battleCode}" bol úspešne aktivovaný!`);
+                    paymentModal.classList.remove('show'); // Close modal on success
+                    battleCodeInput.value = ''; // Clear input
+                } catch (error) {
+                    console.error("Error redeeming battle code:", error);
+                    battleCodeMessage.textContent = 'Chyba pri aktivácii kódu. Skúste to prosím znova.';
+                    battleCodeMessage.classList.add('text-red-500');
+                    displayMessage('error', 'Chyba pri aktivácii kódu.');
+                }
+            } else {
+                battleCodeMessage.textContent = 'Neplatný battle kód alebo nesprávny typ balíčka.';
+                battleCodeMessage.classList.add('text-red-500');
+                displayMessage('error', 'Neplatný battle kód.');
+            }
+        }
+
+
+        /**
          * Translates a word using the Gemini API.
          */
         async function translateWord() {
@@ -823,6 +926,8 @@
         // Open payment modal
         unlockTranslatorButton.addEventListener('click', () => {
             paymentModal.classList.add('show');
+            battleCodeMessage.textContent = ''; // Clear any previous messages
+            battleCodeMessage.classList.remove('text-red-500', 'text-green-500');
         });
 
         // Close payment modal
@@ -830,20 +935,63 @@
             paymentModal.classList.remove('show');
         });
 
-        // Handle clicks on "Zakúpiť" buttons (main section)
+        // Handle clicks on "Zakúpiť" buttons (main section) and "Aktivovať kódom" buttons
         purchasePackageButtons.forEach(button => {
             button.addEventListener('click', (event) => {
                 const packageType = event.target.dataset.package;
-                simulatePurchase(packageType);
+                const purchaseType = event.target.dataset.purchaseType;
+
+                if (purchaseType === 'battle-code') {
+                    // If it's a battle code button, open modal and focus on battle code input
+                    paymentModal.classList.add('show');
+                    battleCodeInput.focus();
+                    // Optionally, pre-fill the package type if the code is specific to it
+                    // battleCodeInput.value = `CODE_FOR_${packageType.toUpperCase().replace(/ /g, '_')}`;
+                    battleCodeMessage.textContent = `Zadajte kód pre balíček "${packageType}".`;
+                    battleCodeMessage.classList.remove('text-red-500', 'text-green-500');
+                    battleCodeMessage.classList.add('text-gray-700');
+                } else {
+                    simulatePurchase(packageType);
+                }
             });
         });
 
-        // Handle clicks on "Zakúpiť" buttons (modal)
+        // Handle clicks on "Zakúpiť" buttons (modal) and "Aktivovať kódom" buttons in modal
         purchaseModalButtons.forEach(button => {
             button.addEventListener('click', (event) => {
                 const packageType = event.target.dataset.package;
-                simulatePurchase(packageType);
+                const purchaseType = event.target.dataset.purchaseType;
+
+                if (purchaseType === 'battle-code') {
+                    // For modal battle code buttons, prepare the input for redemption
+                    battleCodeInput.focus();
+                    battleCodeMessage.textContent = `Zadajte kód pre balíček "${packageType}".`;
+                    battleCodeMessage.classList.remove('text-red-500', 'text-green-500');
+                    battleCodeMessage.classList.add('text-gray-700');
+                    // Store packageType temporarily for the redeem button
+                    redeemBattleCodeButton.dataset.package = packageType;
+                } else {
+                    simulatePurchase(packageType);
+                }
             });
+        });
+
+        // Redeem Battle Code button click
+        redeemBattleCodeButton.addEventListener('click', () => {
+            const battleCode = battleCodeInput.value.trim();
+            const packageTypeForRedemption = redeemBattleCodeButton.dataset.package; // Get package type from the button's data attribute
+
+            if (!battleCode) {
+                battleCodeMessage.textContent = 'Prosím, zadajte battle kód.';
+                battleCodeMessage.classList.add('text-red-500');
+                return;
+            }
+            if (!packageTypeForRedemption) {
+                 battleCodeMessage.textContent = 'Vyberte prosím balíček, pre ktorý chcete kód aktivovať.';
+                 battleCodeMessage.classList.add('text-red-500');
+                 return;
+            }
+            redeemBattleCode(battleCode, packageTypeForRedemption);
         });
 
         // Translate button click
