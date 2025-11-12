@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Preklad GAMEPLA631 - Bezplatné & Prémiové Preklady</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -147,6 +149,7 @@
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
+    <!-- Header Section -->
     <header class="bg-white shadow-md py-4">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <a href="#" class="text-3xl font-bold text-indigo-700">Preklad <span class="text-purple-600">GAMEPLA631</span></a>
@@ -162,6 +165,7 @@
         </div>
     </header>
 
+    <!-- Hero Section -->
     <section class="premium-gradient text-white py-20 text-center">
         <div class="container mx-auto px-4">
             <h1 class="text-5xl md:text-6xl font-extrabold leading-tight mb-6 animate-fade-in-up">
@@ -177,6 +181,7 @@
         </div>
     </section>
 
+    <!-- About Section -->
     <section id="about" class="py-16 bg-gray-50">
         <div class="container mx-auto px-4 text-center">
             <h2 class="text-4xl font-bold text-indigo-700 mb-8">O Preklad GAMEPLA631</h2>
@@ -190,10 +195,12 @@
         </div>
     </section>
 
+    <!-- Services Section -->
     <section id="services" class="py-16 bg-white">
         <div class="container mx-auto px-4">
             <h2 class="text-4xl font-bold text-indigo-700 text-center mb-12">Naše Exkluzívne Služby</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service Card 1 -->
                 <div class="card transform hover:scale-105 transition duration-300">
                     <h3 class="text-2xl font-semibold text-purple-600 mb-4">Odborné Preklady</h3>
                     <p class="text-gray-600">
@@ -201,6 +208,7 @@
                         Naši prekladatelia majú hlboké znalosti v konkrétnych odvetviach, čo zaručuje terminologickú presnosť.
                     </p>
                 </div>
+                <!-- Service Card 2 -->
                 <div class="card transform hover:scale-105 transition duration-300">
                     <h3 class="text-2xl font-semibold text-purple-600 mb-4">Lokalizácia a Transkreácia</h3>
                     <p class="text-gray-600">
@@ -208,6 +216,7 @@
                         Zabezpečujeme, aby vaše posolstvo rezonovalo s cieľovým publikom, zachovávajúc pôvodný zámer a emócie.
                     </p>
                 </div>
+                <!-- Service Card 3 -->
                 <div class="card transform hover:scale-105 transition duration-300">
                     <h3 class="text-2xl font-semibold text-purple-600 mb-4">Súdne a Notársky Overené Preklady</h3>
                     <p class="text-gray-600">
@@ -215,6 +224,7 @@
                         ktoré sú akceptované štátnymi inštitúciami a úradmi po celom svete.
                     </p>
                 </div>
+                <!-- Service Card 4 -->
                 <div class="card transform hover:scale-105 transition duration-300">
                     <h3 class="text-2xl font-semibold text-purple-600 mb-4">Expresné Preklady</h3>
                     <p class="text-gray-600">
@@ -222,6 +232,7 @@
                         v rekordne krátkom čase, bez kompromisov na kvalite.
                     </p>
                 </div>
+                <!-- Service Card 5 -->
                 <div class="card transform hover:scale-105 transition duration-300">
                     <h3 class="text-2xl font-semibold text-purple-600 mb-4">Korektúry Rodeným Hovorcom</h3>
                     <p class="text-gray-600">
@@ -229,6 +240,7 @@
                         aby sa zabezpečila maximálna plynulosť, prirodzenosť a bezchybnosť textu.
                     </p>
                 </div>
+                <!-- Service Card 6 -->
                 <div class="card transform hover:scale-105 transition duration-300">
                     <h3 class="text-2xl font-semibold text-purple-600 mb-4">Terminologická Správa</h3>
                     <p class="text-gray-600">
@@ -240,6 +252,7 @@
         </div>
     </section>
 
+    <!-- Word Translator Section -->
     <section id="word-translator" class="py-16 bg-gray-100">
         <div class="container mx-auto px-4 text-center">
             <h2 class="text-4xl font-bold text-indigo-700 mb-8 animate-fade-in-up">Bezplatný Prekladač Slov</h2>
@@ -274,10 +287,12 @@
                             <option value="pt">Portugalčina</option>
                             <option value="ko">Kórejčina</option>
                             <option value="sk">Slovenčina</option>
-                            </select>
+                            <!-- Add more languages as needed -->
+                        </select>
                     </div>
                     <button id="translateButton" class="btn-primary w-full py-3">Preložiť slovo</button>
                     <div id="translationResult" class="mt-8 text-2xl font-semibold text-indigo-700 min-h-[40px] flex items-center justify-center">
+                        <!-- Translation will appear here -->
                         <button id="speakTranslatedWord" class="speak-button hidden" aria-label="Prehrať preložené slovo">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                 <path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3.93-3.07 7.1-7 7.1-3.93 0-7-3.17-7-7.1H3c0 4.42 3.58 8.01 8 8.01v3h2v-3c4.42 0 8-3.59 8-8.01h-2.7z"/>
@@ -292,6 +307,7 @@
         </div>
     </section>
 
+    <!-- Paid Translator Section -->
     <section id="paid-translator" class="py-16 bg-indigo-700 text-white">
         <div class="container mx-auto px-4 text-center">
             <h2 class="text-4xl font-bold mb-8 animate-fade-in-up">Prémiový Prekladač: Neobmedzené Možnosti</h2>
@@ -300,6 +316,7 @@
                 Vyberte si plán, ktorý najlepšie vyhovuje vašim potrebám.
             </p>
             <div class="flex flex-wrap justify-center items-stretch gap-8">
+                <!-- Premium Plan 1 (Affordable) -->
                 <div class="card max-w-sm w-full bg-white text-gray-800 p-8 flex flex-col justify-between animate-fade-in-up delay-200">
                     <div>
                         <h3 class="text-3xl font-bold text-indigo-600 mb-4">Štandardné ročné predplatné</h3>
@@ -311,9 +328,11 @@
                             <li class="flex items-center"><svg class="w-6 h-6 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> Bez reklám</li>
                         </ul>
                     </div>
+                    <!-- Zmenený na button s data atribútmi pre JavaScript spracovanie -->
                     <button type="button" class="btn-primary w-full open-payment-modal" data-plan-name="Štandardné ročné predplatné" data-amount="9.99">Predplatiť ročne za 9,99 €</button>
                 </div>
 
+                <!-- Premium Plan 2 (Expensive) -->
                 <div class="card max-w-sm w-full bg-white text-gray-800 p-8 flex flex-col justify-between transform hover:scale-105 transition duration-300 border-2 border-purple-500 shadow-xl animate-fade-in-up delay-300">
                     <div>
                         <h3 class="text-3xl font-bold text-red-600 mb-4">VIP Elitné ročné predplatné</h3>
@@ -325,12 +344,14 @@
                             <li class="flex items-center"><svg class="w-6 h-6 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> Nadštandardná podpora 24/7</li>
                         </ul>
                     </div>
+                    <!-- Zmenený na button s data atribútmi pre JavaScript spracovanie -->
                     <button type="button" class="btn-primary w-full !bg-gradient-to-r !from-red-600 !to-purple-700 hover:!from-red-700 hover:!to-purple-800 open-payment-modal" data-plan-name="VIP Elitné ročné predplatné" data-amount="500.99">Predplatiť ročne za 500,99 €</button>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Pricing Section (Content simplified as no direct purchase) -->
     <section id="pricing" class="py-16 bg-gray-50">
         <div class="container mx-auto px-4 text-center">
             <h2 class="text-4xl font-bold text-indigo-700 mb-8">Cenník: Investícia do Kvality</h2>
@@ -356,6 +377,7 @@
         </div>
     </section>
 
+    <!-- Contact Section -->
     <section id="contact" class="py-16 bg-white">
         <div class="container mx-auto px-4 text-center">
             <h2 class="text-4xl font-bold text-indigo-700 mb-8">Kontaktujte Nás</h2>
@@ -380,12 +402,14 @@
         </div>
     </section>
 
+    <!-- Footer Section -->
     <footer class="bg-gray-800 text-white py-8 mt-auto">
         <div class="container mx-auto px-4 text-center">
             <p>&copy; 2025 Preklad GAMEPLA631. Všetky práva vyhradené. | Prémiové preklady pre prémiových klientov.</p>
         </div>
     </footer>
 
+    <!-- Payment Modal (simulácia vlastného platobného systému) -->
     <div id="paymentModal" class="modal">
         <div class="modal-content">
             <span class="close-button" id="closePaymentModal">&times;</span>
@@ -405,7 +429,8 @@
                         <div class="card-icons mt-2">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/200px-Visa_Inc._logo.svg.png" alt="Visa" class="card-icon" id="visa-icon">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/200px-Mastercard-logo.svg.png" alt="MasterCard" class="card-icon" id="mastercard-icon">
-                            </div>
+                            <!-- Add more card icons if needed (e.g., Amex, Discover) -->
+                        </div>
                     </div>
                     <div>
                         <label for="cardName" class="block text-left text-gray-700 text-sm font-bold mb-2">Meno držiteľa karty:</label>
@@ -442,21 +467,75 @@
     <script type="module">
         console.log("Script start.");
 
-        // Function to speak text
+        // Funkcia na rečový výstup textu (TTS)
         function speakText(text, lang) {
             if ('speechSynthesis' in window) {
                 const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = lang; // Set language for speech
+                utterance.lang = lang; // Nastavenie jazyka
                 window.speechSynthesis.speak(utterance);
             } else {
-                console.warn('Speech synthesis not supported in this browser.');
+                console.warn('Rečový výstup nie je v tomto prehliadači podporovaný.');
             }
         }
+
+        /**
+         * Robustné volanie Gemini API s exponenciálnym spätným odstupom.
+         * Používa model gemini-2.5-flash-preview-09-2025.
+         */
+        async function callGeminiApiWithBackoff(payload, maxRetries = 3) {
+            const apiKey = "AIzaSyA7UeU1kIC_0VF5HNCeEhrBkPFoeoIiC4o"; // API kľúč je poskytnutý prostredím Canvas
+            const modelName = "gemini-2.5-flash-preview-09-2025";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+
+            for (let attempt = 0; attempt < maxRetries; attempt++) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    // Ak je odpoveď v poriadku (200-299), pokračujeme
+                    if (response.ok) {
+                        return await response.json();
+                    }
+
+                    // Ak ide o chybu servera alebo preťaženie (429, 5xx), skúsime znova
+                    if (response.status === 429 || response.status >= 500) {
+                        if (attempt < maxRetries - 1) {
+                            const delay = Math.pow(2, attempt) * 1000 + (Math.random() * 1000); // 1s, 2s, 4s + random jitter
+                            console.warn(`Pokus ${attempt + 1}/${maxRetries} zlyhal s chybou ${response.status}. Opakujem o ${delay.toFixed(0)}ms.`);
+                            await new Promise(resolve => setTimeout(resolve, delay));
+                            continue; // Prejde na ďalší pokus
+                        } else {
+                            throw new Error(`Volanie API zlyhalo po ${maxRetries} pokusoch s chybou ${response.status}.`);
+                        }
+                    } else {
+                        // Ostatné chyby (4xx) sa nebudú opakovať
+                        const errorBody = await response.json();
+                        throw new Error(`Chyba API: ${response.status} - ${errorBody.error?.message || response.statusText}`);
+                    }
+                } catch (error) {
+                    if (error.message.startsWith('Volanie API zlyhalo') || error.message.startsWith('Chyba API')) {
+                        throw error; // Re-throw the structured API error
+                    }
+                    if (attempt < maxRetries - 1) {
+                        const delay = Math.pow(2, attempt) * 1000 + (Math.random() * 1000);
+                        console.error(`Chyba siete/fetchu pri pokuse ${attempt + 1}/${maxRetries}: ${error.message}. Opakujem o ${delay.toFixed(0)}ms.`);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                    } else {
+                        throw new Error(`Sieťová chyba po ${maxRetries} pokusoch: ${error.message}`);
+                    }
+                }
+            }
+            throw new Error("Neočakávaný koniec cyklu volaní API."); // Should not be reached
+        }
+
 
         document.addEventListener('DOMContentLoaded', async () => {
             console.log("DOM Content Loaded. Setting up translator and payment modal.");
 
-            // --- Translator Logic ---
+            // --- Logika Prekladača ---
             const wordInput = document.getElementById('wordInput');
             const languageSelect = document.getElementById('languageSelect');
             const translateButton = document.getElementById('translateButton');
@@ -476,7 +555,7 @@
 
             if (speakTranslatedWordButton) {
                 speakTranslatedWordButton.addEventListener('click', () => {
-                    console.log("CLICK: Speak translated word button clicked.");
+                    console.log("KLIK: Tlačidlo pre rečový výstup kliknuté.");
                     if (lastTranslatedText && lastTargetLanguage) {
                         speakText(lastTranslatedText, lastTargetLanguage);
                     }
@@ -485,7 +564,7 @@
 
             if (translateButton) {
                 translateButton.addEventListener('click', async () => {
-                    console.log("CLICK: Translate button clicked.");
+                    console.log("KLIK: Tlačidlo Preložiť slovo kliknuté.");
 
                     if (translationCount >= FREE_TRANSLATION_LIMIT) {
                         translationResult.innerHTML = `Dosiahli ste limit ${FREE_TRANSLATION_LIMIT} bezplatných prekladov. Pre neobmedzené preklady si prosím <a href="#paid-translator" class="text-purple-600 font-semibold hover:underline">zakúpte prémiovú verziu</a>.`;
@@ -503,7 +582,7 @@
                     const targetLanguageName = languageSelect.options[languageSelect.selectedIndex].text;
 
                     if (!word) {
-                        console.log("No word entered for translation.");
+                        console.log("Nezadané slovo na preklad.");
                         translationResult.innerHTML = 'Prosím, zadajte slovo na preklad.';
                         translationResult.classList.remove('text-indigo-700');
                         translationResult.classList.add('text-red-600');
@@ -516,30 +595,32 @@
                     translationResult.classList.remove('text-red-600');
                     translationResult.classList.add('text-indigo-700');
                     speakTranslatedWordButton.classList.add('hidden');
-                    console.log(`Translating "${word}" to ${targetLanguageName}...`);
+                    console.log(`Prekladám slovo "${word}" do ${targetLanguageName}...`);
 
                     try {
-                        const prompt = `Preložte slovo "${word}" do ${targetLanguageName} (${targetLanguage}). Poskytnite iba preložené slovo, bez ďalšieho textu alebo vysvetlení.`;
-                        let chatHistory = [];
-                        chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                        const prompt = `Preložte slovo "${word}" do ${targetLanguageName} (${targetLanguage}). Poskytnite iba preložené slovo, bez akéhokoľvek iného textu alebo vysvetlení.`;
+                        
+                        const payload = { 
+                            contents: [{ parts: [{ text: prompt }] }],
+                            systemInstruction: { parts: [{ text: "Si profesionálny prekladateľ. Vždy poskytni iba samotné preložené slovo." }] }
+                        };
 
-                        const payload = { contents: chatHistory };
-                        const apiKey = "AIzaSyA7UeU1kIC_0VF5HNCeEhrBkPFoeoIiC4o"; // API key is provided by Canvas runtime
-                        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                        const response = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-
-                        const result = await response.json();
-                        console.log("Gemini API response:", result);
+                        // Volanie vylepšenej funkcie s backoff mechanizmom
+                        const result = await callGeminiApiWithBackoff(payload);
+                        
+                        console.log("Odpoveď Gemini API:", result);
 
                         if (result.candidates && result.candidates.length > 0 &&
                             result.candidates[0].content && result.candidates[0].content.parts &&
                             result.candidates[0].content.parts.length > 0) {
-                            const translatedText = result.candidates[0].content.parts[0].text.trim();
+                            
+                            // Vyčistenie preloženého textu od prípadných úvodzoviek alebo nadbytočných medzier
+                            const translatedText = result.candidates[0].content.parts[0].text.trim().replace(/^['"]|['"]$/g, '');
+                            
+                            if (!translatedText) {
+                                throw new Error("Prekladateľ nevrátil žiadny text.");
+                            }
+
                             lastTranslatedText = translatedText;
                             lastTargetLanguage = targetLanguage;
 
@@ -547,18 +628,15 @@
                             speakTranslatedWordButton.classList.remove('hidden');
                             speakText(translatedText, targetLanguage);
                             translationCount++;
-                            console.log(`Translations remaining: ${FREE_TRANSLATION_LIMIT - translationCount}`);
+                            console.log(`Zostáva bezplatných prekladov: ${FREE_TRANSLATION_LIMIT - translationCount}`);
 
                         } else {
-                            console.warn("Unexpected Gemini API response structure or no translation found.");
-                            translationResult.innerHTML = 'Preklad sa nepodarilo získať.';
-                            translationResult.classList.remove('text-indigo-700');
-                            translationResult.classList.add('text-red-600');
-                            speakTranslatedWordButton.classList.add('hidden');
+                            console.warn("Neočakávaná štruktúra odpovede Gemini API alebo preklad nebol nájdený.");
+                            throw new Error('Štruktúra odpovede neobsahuje preklad.');
                         }
                     } catch (error) {
-                        console.error('Chyba pri preklade:', error);
-                        translationResult.innerHTML = 'Nastala chyba pri preklade. Skúste to prosím znova.';
+                        console.error('Nastala chyba pri volaní API:', error);
+                        translationResult.innerHTML = `Nastala chyba pri preklade: ${error.message}. Skúste to prosím znova.`;
                         translationResult.classList.remove('text-indigo-700');
                         translationResult.classList.add('text-red-600');
                         speakTranslatedWordButton.classList.add('hidden');
@@ -568,22 +646,22 @@
                 });
             }
 
-            // --- Payment Modal Logic ---
+            // --- Logika Platobného Modalu (nezmenená) ---
             const paymentModal = document.getElementById('paymentModal');
             const closePaymentModal = document.getElementById('closePaymentModal');
             const openPaymentButtons = document.querySelectorAll('.open-payment-modal');
             const modalPlanInfo = document.getElementById('modalPlanInfo');
             const paymentStatus = document.getElementById('paymentStatus');
 
-            // Tabs for payment methods
+            // Taby pre platobné metódy
             const tabButtons = document.querySelectorAll('.tab-button');
             const tabContents = document.querySelectorAll('.tab-content');
 
-            // Payment forms
+            // Platobné formuláre
             const cardPaymentForm = document.getElementById('cardPaymentForm');
             const paysafeCardForm = document.getElementById('paysafeCardForm');
 
-            // Card input and icons
+            // Vstupy pre kartu a ikony
             const cardNumberInput = document.getElementById('cardNumber');
             const visaIcon = document.getElementById('visa-icon');
             const mastercardIcon = document.getElementById('mastercard-icon');
@@ -591,34 +669,33 @@
             let selectedPlanName = '';
             let selectedAmount = '';
 
-            // Function to detect card type
+            // Funkcia na detekciu typu karty
             function detectCardType(cardNumber) {
-                // Remove non-digit characters
+                // Odstránenie nečíselných znakov
                 const cleanedCardNumber = cardNumber.replace(/\D/g, '');
 
-                // Visa: Starts with 4, length 13, 16, or 19
+                // Visa: Začína na 4, dĺžka 13, 16, alebo 19
                 if (/^4\d{12}(\d{3})?(\d{3})?$/.test(cleanedCardNumber)) {
                     return 'visa';
                 }
-                // MasterCard: Starts with 51-55 or 2221-2720, length 16
+                // MasterCard: Začína na 51-55 alebo 2221-2720, dĺžka 16
                 if (/^(5[1-5]\d{14}|222[1-9]\d{12}|22[3-9]\d{13}|2[3-6]\d{14}|27[01]\d{13}|2720\d{12})$/.test(cleanedCardNumber)) {
                     return 'mastercard';
                 }
-                // Add more card types if needed (e.g., Amex, Discover)
                 return 'unknown';
             }
 
-            // Event listener for card number input
+            // Listener pre detekciu karty
             if (cardNumberInput) {
                 cardNumberInput.addEventListener('input', () => {
                     const cardNumber = cardNumberInput.value;
                     const cardType = detectCardType(cardNumber);
 
-                    // Reset all icons
+                    // Reset všetkých ikon
                     visaIcon.classList.remove('active');
                     mastercardIcon.classList.remove('active');
 
-                    // Activate the detected card icon
+                    // Aktivácia detekovanej ikony karty
                     if (cardType === 'visa') {
                         visaIcon.classList.add('active');
                     } else if (cardType === 'mastercard') {
@@ -642,7 +719,7 @@
                             content.classList.remove('active');
                         }
                     });
-                    paymentStatus.classList.add('hidden'); // Clear status when switching tabs
+                    paymentStatus.classList.add('hidden'); // Vyčistíme status pri prepínaní tabov
                 });
             });
 
@@ -652,57 +729,51 @@
                     selectedAmount = event.target.dataset.amount;
 
                     modalPlanInfo.textContent = `Vybrali ste si: ${selectedPlanName} za ${selectedAmount} € ročne.`;
-                    paymentModal.style.display = 'flex'; // Show the modal
-                    paymentStatus.classList.add('hidden'); // Hide status message on new open
+                    paymentModal.style.display = 'flex'; // Zobrazenie modalu
+                    paymentStatus.classList.add('hidden'); // Skrytie status správy pri novom otvorení
                     
-                    // Reset to default tab and clear forms when modal opens
-                    tabButtons[0].click(); // Simulate click on the first tab (Card Payment)
+                    // Reset na predvolený tab a vyčistenie formulárov
+                    tabButtons[0].click(); // Simulácia kliku na prvý tab (Platobná karta)
                     cardPaymentForm.reset();
                     paysafeCardForm.reset();
-                    // Reset card icons on modal open
+                    // Reset ikon kariet
                     visaIcon.classList.remove('active');
                     mastercardIcon.classList.remove('active');
                 });
             });
 
             closePaymentModal.addEventListener('click', () => {
-                paymentModal.style.display = 'none'; // Hide the modal
+                paymentModal.style.display = 'none'; // Skrytie modalu
             });
 
-            // Close modal when clicking outside of the content
+            // Zatvorenie modalu kliknutím mimo obsah
             window.addEventListener('click', (event) => {
                 if (event.target == paymentModal) {
                     paymentModal.style.display = 'none';
                 }
             });
 
-            // Card Payment Form Submission (Simulation)
+            // Odoslanie formulára Platba kartou (Simulácia)
             cardPaymentForm.addEventListener('submit', (event) => {
-                event.preventDefault(); // Prevent default form submission
+                event.preventDefault(); // Zamedzenie predvoleného odoslania formulára
 
                 const cardNumber = document.getElementById('cardNumber').value;
                 const cardName = document.getElementById('cardName').value;
                 const expiryDate = document.getElementById('expiryDate').value;
                 const cvv = document.getElementById('cvv').value;
 
-                console.log("Simulovaná platba kartou:");
-                console.log("Plán:", selectedPlanName);
-                console.log("Suma:", selectedAmount, "€");
-                console.log("Číslo karty:", cardNumber);
-                console.log("Meno držiteľa:", cardName);
-                console.log("Exspirácia:", expiryDate);
-                console.log("CVV:", cvv);
+                console.log("Simulovaná platba kartou.");
 
                 paymentStatus.classList.remove('hidden');
-                paymentStatus.classList.remove('text-red-600', 'text-green-600'); // Reset colors
+                paymentStatus.classList.remove('text-red-600', 'text-green-600'); // Reset farieb
 
-                // More robust client-side validation for demonstration
-                const isValidCardNumber = /^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9]{2})[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/.test(cardNumber.replace(/\s/g, '')); // Luhn algorithm is not implemented here for brevity
+                // Viac robustné overenie
+                const isValidCardNumber = /^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9]{2})[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/.test(cardNumber.replace(/\s/g, ''));
                 const isValidExpiryDate = /^(0[1-9]|1[0-2])\/([0-9]{2})$/.test(expiryDate);
-                // Check if expiry date is in the future
+                
                 const [month, year] = expiryDate.split('/').map(Number);
-                const currentYear = new Date().getFullYear() % 100; // Get last two digits of current year
-                const currentMonth = new Date().getMonth() + 1; // getMonth() is 0-indexed
+                const currentYear = new Date().getFullYear() % 100; 
+                const currentMonth = new Date().getMonth() + 1; 
 
                 const isFutureDate = (year > currentYear) || (year === currentYear && month >= currentMonth);
 
@@ -712,8 +783,8 @@
                 if (isValidCardNumber && isValidCardName && isValidExpiryDate && isFutureDate && isValidCvv) {
                     paymentStatus.textContent = 'Platba kartou bola úspešná! Ďakujeme za váš nákup.';
                     paymentStatus.classList.add('text-green-600');
-                    cardPaymentForm.reset(); // Clear the form
-                    // Reset card icons after successful payment
+                    cardPaymentForm.reset(); // Vyčistenie formulára
+                    // Reset ikon kariet po úspešnej platbe
                     visaIcon.classList.remove('active');
                     mastercardIcon.classList.remove('active');
                 } else {
@@ -728,27 +799,24 @@
                 }
             });
 
-            // Paysafecard Form Submission (Simulation)
+            // Odoslanie formulára Paysafecard (Simulácia)
             paysafeCardForm.addEventListener('submit', (event) => {
-                event.preventDefault(); // Prevent default form submission
+                event.preventDefault(); // Zamedzenie predvoleného odoslania formulára
 
                 const paysafePin = document.getElementById('paysafePin').value;
 
-                console.log("Simulovaná platba Paysafecard:");
-                console.log("Plán:", selectedPlanName);
-                console.log("Suma:", selectedAmount, "€");
-                console.log("Paysafecard PIN:", paysafePin);
+                console.log("Simulovaná platba Paysafecard.");
 
                 paymentStatus.classList.remove('hidden');
-                paymentStatus.classList.remove('text-red-600', 'text-green-600'); // Reset colors
+                paymentStatus.classList.remove('text-red-600', 'text-green-600'); // Reset farieb
 
-                // Simple client-side validation for demonstration (Paysafecard PIN is 16 digits)
+                // Jednoduché overenie PIN kódu Paysafecard
                 const isValidPaysafePin = /^[0-9]{16}$/.test(paysafePin);
 
                 if (isValidPaysafePin) {
                     paymentStatus.textContent = 'Platba Paysafecard bola úspešná! Ďakujeme za váš nákup.';
                     paymentStatus.classList.add('text-green-600');
-                    paysafeCardForm.reset(); // Clear the form
+                    paysafeCardForm.reset(); // Vyčistenie formulára
                 } else {
                     paymentStatus.textContent = 'Chyba platby Paysafecard: Prosím, zadajte platný 16-miestny PIN kód.';
                     paymentStatus.classList.add('text-red-600');
